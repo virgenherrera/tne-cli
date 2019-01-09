@@ -1,0 +1,50 @@
+import { resolve } from 'url';
+import { IPagedDto, ExpressApplication } from '@tne/express-app';
+import { <%- moduleName%> } from '../poco/<%- moduleFileName%>';
+import { <%- moduleName%>Repository } from '../repository/<%- moduleFileName%>';
+import { validateSchema } from '../lib/validateSchema';
+import * as <%- moduleFileName%>Schemas from '../validate/<%- moduleFileName%>';
+
+/* <%- moduleName%> Controller Class */
+export class <%- moduleName%>Controller {
+	static get instance (): <%- moduleName%> {
+		return new <%- moduleName%>;
+	}
+
+	async createAction(params: any): Promise<<%- moduleName%>> {
+		const dto = validateSchema(params, <%- moduleFileName%>Schemas.create);
+		const poco = new <%- moduleName%>(dto);
+
+		return await <%- moduleName%>Repository.instance.Create(poco);
+	}
+
+	async deleteAction(params: any): Promise<<%- moduleName%>> {
+		const { id, softDelete } = validateSchema(params, <%- moduleFileName%>Schemas.delete);
+
+		return await <%- moduleName%>Repository.instance.Delete(id, softDelete);
+	}
+
+	async editAction(params: any): Promise<<%- moduleName%>> {
+		const dto = validateSchema(params, <%- moduleFileName%>Schemas.edit);
+		const poco = new <%- moduleName%>(dto);
+
+		return await <%- moduleName%>Repository.instance.Edit(poco);
+	}
+
+	async listAction(params: any): Promise<IPagedDto<<%- moduleName%>>> {
+		const { getConfig } = ExpressApplication.instance;
+		const uri = resolve(getConfig('serviceUrl'), Routes.Device);
+		const dto = validateSchema({ type, sort }, <%- moduleFileName%>Schemas.list);
+		const filters = new <%- moduleName%>ListFilters(dto, page, per_page);
+		const { count, rows } = await <%- moduleName%>Repository.instance.FindAndCount(filters);
+		const { queryStringArgs } = filters;
+
+		return { uri, rows, count, page, per_page, queryStringArgs };
+	}
+
+	async showAction(params: any): Promise<<%- moduleName%>> {
+		const { id } = validateSchema(params, <%- moduleFileName%>Schemas.find);
+
+		return await <%- moduleName%>Repository.instance.GetById(id);
+	}
+}

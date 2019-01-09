@@ -1,5 +1,7 @@
+import { parse } from 'path';
+import { ToTitleCase, toCamelCase } from '@tne/common';
 import { ICommand } from '../interface';
-import { parse, join } from 'path';
+import { newFileFromTemplate } from '../lib';
 
 export class Controller implements ICommand {
 	command = 'controller';
@@ -8,19 +10,17 @@ export class Controller implements ICommand {
 	description = 'will create a controller template when completed';
 
 	action(providedPath: string) {
-		const protoName = providedPath.split('/').pop();
+		const { name } = parse(providedPath);
 
-		if (!/^\w+$/i.test(protoName)) {
+		if (!/^\w+$/i.test(name)) {
 			throw new TypeError(`The path: "${providedPath}" does not contain a valid controller name.`);
 		}
 
-		const furtherPath = join(process.cwd(), 'node/src', providedPath);
-		const { dir, name } = parse(furtherPath);
-		[
-			providedPath,
-			furtherPath,
-			dir, name,
-			/^\w+$/i.test(name)
-		].forEach(<any>console.dir);
+		const data = {
+			moduleFileName: toCamelCase(name),
+			moduleName: ToTitleCase(name, ''),
+		};
+
+		return newFileFromTemplate('controller', providedPath, data);
 	}
 }
