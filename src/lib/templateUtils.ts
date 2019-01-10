@@ -2,9 +2,10 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join, parse } from 'path';
 import { render } from 'ejs';
 import { mkdir } from 'shelljs';
-import { templateTypes, filePermissions } from '../interface';
-import { rwxFilePerm, rwFilePerm, logColor } from '../constant/defaults';
-import { toCamelCase, pathExists } from '@tne/common';
+import { templateTypes, filePermissions, INewFileOpts } from '../interface';
+import { rwxFilePerm, rwFilePerm } from '../constant/defaults';
+import { pathExists, fileExists, to_snake_case } from '@tne/common';
+import ColorConsole from './colorConsole';
 
 export function readTemplate(templateName: templateTypes): string {
 	const templatePath = join(__dirname, '../../template', templateName);
@@ -15,23 +16,31 @@ export function readTemplate(templateName: templateTypes): string {
 export function writeTemplate(path: string, fileContents: string, fPerms: filePermissions = 'rw'): void {
 	const mode: number = (fPerms === 'rwx') ? rwxFilePerm : rwFilePerm;
 
-	console.log(logColor.FgGreen, `Writing file: "${path}"`);
+	ColorConsole.green(`Writing file: "${path}"`);
+
 	writeFileSync(path, fileContents, { encoding: 'utf8', mode });
 }
 
-export function newFileFromTemplate(template: templateTypes, path: string, data: any, fPerms: filePermissions = 'rw'): void {
-	let furtherPath = join(process.cwd(), 'node/src', path);
+export function newFileFromTemplate(args: INewFileOpts): void {
+	const { template, path, data, overwrite = false, fExt = '.ts', fPerms = 'rw' } = args;
+	const furtherPath = join(process.cwd(), path);
 	const tplStr = readTemplate(template);
 	const fileContents = render(tplStr, data);
-	const { dir, name, ext } = parse(furtherPath);
-	const fileName = `${toCamelCase(name)}${ext || '.ts'}`;
+	const { dir, name } = parse(furtherPath);
+	const fileName = `${to_snake_case(name)}${fExt}`;
+	const filePath = join(dir, fileName);
 
 	if (!pathExists(dir)) {
-		console.log(logColor.FgYellow, `the directory tree is being created: "${dir}"`);
+		ColorConsole.greenBright(`creating non-existent directory tree: "${dir}"${'\n'}`);
 		mkdir('-p', dir);
 	}
 
-	furtherPath = join(dir, fileName);
+	if (fileExists(filePath) && !overwrite) {
+		ColorConsole.yellow(`${'\n'}The creation of the file has been omitted: "${filePath}" since it already existed.`);
+		return;
+	} else if (fileExists(filePath) && overwrite) {
+		ColorConsole.yellow(`Overwriting the file: "${filePath}" since option --force has been received.${'\n'}`);
+	}
 
-	writeTemplate(furtherPath, fileContents, fPerms);
+	writeTemplate(filePath, fileContents, fPerms);
 }

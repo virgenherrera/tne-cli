@@ -1,6 +1,46 @@
 export const rwFilePerm = parseInt('0666', 8);
 export const rwxFilePerm = parseInt('0755', 8);
 
+export const appRegEx = {
+	moduleName: /^[a-z]{1}\w+$/i,
+	jsPropName: /^[a-z_]{1}\w+$/i,
+	word: /^\w+$/i,
+	appDataType: /^(string|number|date|boolean)$/i,
+};
+
+export const DEFAULT_ATTRIBUTES = 'stringAttr:string,numberAttr:number,dateAttr:date,booleanAttr:boolean';
+
+export enum projectRootFolder {
+	vscode = '.vscode',
+	assets = 'assets',
+	build = 'build',
+	config = 'config',
+	docs = 'docs',
+	pmCollection = 'postmanCollection',
+	public = 'public',
+	src = 'src',
+	test = 'test',
+	views = 'views',
+}
+
+export enum projectSrcFolder {
+	controller = 'controller',
+	handler = 'handler',
+	lib = 'lib',
+	middleware = 'middleware',
+	model = 'model',
+	poco = 'poco',
+	repository = 'repository',
+	service = 'service',
+	config = 'config',
+	validate = 'validate',
+}
+
+export enum projectHandlerFolder {
+	rendered = 'rendered',
+	restful = 'restful',
+}
+
 export enum logColor {
 	BgBlack = '\x1b[40m',
 	BgBlue = '\x1b[44m',

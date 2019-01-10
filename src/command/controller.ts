@@ -1,26 +1,36 @@
-import { parse } from 'path';
-import { ToTitleCase, toCamelCase } from '@tne/common';
-import { ICommand } from '../interface';
-import { newFileFromTemplate } from '../lib';
+import { parse, join } from 'path';
+import * as cli from 'commander';
+import { ICommand, INewFileOpts } from '../interface';
+import { newFileFromTemplate, moduleNameParse, attributesParse } from '../lib';
+import { DEFAULT_ATTRIBUTES, appRegEx, projectSrcFolder, projectRootFolder } from '../constant/defaults';
+import ColorConsole from '../lib/colorConsole';
 
 export class Controller implements ICommand {
 	command = 'controller';
 	alias = 'c';
-	syntax = `${this.command} <path>`;
-	description = 'will create a controller template when completed';
+	syntax = `${this.command} <name> [attributes]`;
+	description = `helps you create a new <name> controller file with [attributes] in "prop:dataType,prop:dataType" format`;
 
-	action(providedPath: string) {
-		const { name } = parse(providedPath);
+	action(nameArg: string, attrsStr = DEFAULT_ATTRIBUTES) {
+		const { force = false } = cli;
+		const { name } = parse(nameArg);
 
-		if (!/^\w+$/i.test(name)) {
-			throw new TypeError(`The path: "${providedPath}" does not contain a valid controller name.`);
+		if (!appRegEx.moduleName.test(name)) {
+			ColorConsole.red(`"${name}" is not a valid controller name.`);
+			process.exit(1);
 		}
 
 		const data = {
-			moduleFileName: toCamelCase(name),
-			moduleName: ToTitleCase(name, ''),
+			...moduleNameParse(name),
+			...attributesParse(attrsStr),
+		};
+		const args: INewFileOpts = {
+			template: 'controller',
+			path: join(projectRootFolder.src, projectSrcFolder.controller, name),
+			data,
+			overwrite: force,
 		};
 
-		return newFileFromTemplate('controller', providedPath, data);
+		return newFileFromTemplate(args);
 	}
 }

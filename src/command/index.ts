@@ -1,9 +1,8 @@
-import { Pelana } from './pelana';
-import { Weputa } from './weputa';
 import { Controller } from './controller';
+import { ICommand } from '../interface';
 
-export default [
+const commands: ICommand[] = [
 	new Controller,
-	new Pelana,
-	new Weputa,
 ];
+
+export default commands;
