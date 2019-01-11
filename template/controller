@@ -1,0 +1,51 @@
+import { resolve } from 'url';
+import { IPagedDto, ExpressApplication } from '@tne/express-app';
+import { Routes } from '../config/routes';
+import { <%- className%>, <%- className%>ListFilters } from '../poco/<%- fileName%>';
+import { <%- className%>Repository } from '../repository/<%- fileName%>';
+import { validateSchema } from '../lib/validateSchema';
+import * as <%- functionName%>Validate from '../validate/<%- fileName%>';
+
+/* <%- className%> Controller Class */
+export class <%- className%>Controller {
+	static get instance (): <%- className%> {
+		return new <%- className%>;
+	}
+
+	async createAction(params: any): Promise<<%- className%>> {
+		const dto = validateSchema(params, <%- functionName%>Validate.create);
+		const poco = new <%- className%>(dto);
+
+		return await <%- className%>Repository.instance.Create(poco);
+	}
+
+	async deleteAction(params: any): Promise<<%- className%>> {
+		const { id, softDelete } = validateSchema(params, <%- functionName%>Validate.delete);
+
+		return await <%- className%>Repository.instance.Delete(id, softDelete);
+	}
+
+	async editAction(params: any): Promise<<%- className%>> {
+		const dto = validateSchema(params, <%- functionName%>Validate.edit);
+		const poco = new <%- className%>(dto);
+
+		return await <%- className%>Repository.instance.Edit(poco);
+	}
+
+	async listAction({ <%- attrKeys.join(', ') %>, sort, page, per_page }): Promise<IPagedDto<<%- className%>>> {
+		const serviceUrl = ExpressApplication.instance.getConfig('serviceUrl', '');
+		const uri = resolve(serviceUrl, Routes.Device);
+		const dto = validateSchema({ <%- attrKeys.join(', ') %> }, <%- functionName%>Validate.list);
+		const filters = new <%- className%>ListFilters(dto, sort, page, per_page);
+		const { count, rows } = await <%- className%>Repository.instance.FindAndCount(filters);
+		const { queryStringArgs } = filters;
+
+		return { uri, rows, count, page, per_page, queryStringArgs };
+	}
+
+	async showAction(params: any): Promise<<%- className%>> {
+		const { id } = validateSchema(params, <%- functionName%>Validate.find);
+
+		return await <%- className%>Repository.instance.GetById(id);
+	}
+}

@@ -7,8 +7,10 @@ export class Weputa implements ICommand {
 	description = 'ouputs to stdout the weputa meaning...';
 
 	constructor() {
+		/*
 		cli.option('-f, --force', 'descripccion de la f');
 		cli.option('-h, --hugo', 'opcion hugo', false);
+		*/
 	}
 
 	action(...args) {
