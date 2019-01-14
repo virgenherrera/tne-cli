@@ -10,36 +10,36 @@ export const appRegEx = {
 
 export const DEFAULT_ATTRIBUTES = 'stringAttr:string,numberAttr:number,dateAttr:date,booleanAttr:boolean';
 
-export enum projectRootFolder {
-	vscode = '.vscode',
-	assets = 'assets',
-	build = 'build',
-	config = 'config',
-	docs = 'docs',
-	pmCollection = 'postmanCollection',
-	public = 'public',
-	src = 'src',
-	test = 'test',
-	views = 'views',
-}
+export const projectRootFolder = {
+	vscode: '.vscode',
+	assets: 'assets',
+	build: 'build',
+	config: 'config',
+	docs: 'docs',
+	pmCollection: 'postmanCollection',
+	public: 'public',
+	src: 'src',
+	test: 'test',
+	views: 'views',
+};
 
-export enum projectSrcFolder {
-	controller = 'controller',
-	handler = 'handler',
-	lib = 'lib',
-	middleware = 'middleware',
-	model = 'model',
-	poco = 'poco',
-	repository = 'repository',
-	service = 'service',
-	config = 'config',
-	validate = 'validate',
-}
+export const projectSrcFolder = {
+	controller: 'controller',
+	handler: 'handler',
+	lib: 'lib',
+	middleware: 'middleware',
+	model: 'model',
+	poco: 'poco',
+	repository: 'repository',
+	service: 'service',
+	config: 'config',
+	validate: 'validate',
+};
 
-export enum projectHandlerFolder {
-	rendered = 'rendered',
-	restful = 'restful',
-}
+export const projectHandlerFolder = {
+	rendered: 'rendered',
+	restful: 'restful',
+};
 
 export enum logColor {
 	BgBlack = '\x1b[40m',

@@ -1,5 +1,5 @@
 import * as cli from 'commander';
-import commands from './command';
+import { commands } from './command';
 import ColorConsole from './lib/colorConsole';
 const appPackage = require('../package.json');
 const availableCommands = [];
@@ -9,7 +9,7 @@ cli
 	.description(appPackage.description)
 	.option('-f, --force', 'forces cli to overwrite files if any.');
 
-for (const { command, syntax = null, alias, description, action } of commands) {
+for (const { command, syntax = null, alias, description, action } of commands[Symbol.iterator]()) {
 	availableCommands.push(command, alias);
 
 	cli

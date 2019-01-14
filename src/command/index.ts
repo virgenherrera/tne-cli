@@ -1,8 +1,8 @@
 import { Controller } from './controller';
 import { ICommand } from '../interface';
+import { New } from './new';
 
-const commands: ICommand[] = [
+export const commands: ICommand[] = [
+	new New,
 	new Controller,
 ];
-
-export default commands;
