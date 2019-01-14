@@ -38,7 +38,7 @@ export const projectSrcFolder = {
 
 export const projectHandlerFolder = {
 	rendered: 'rendered',
-	restful: 'restful',
+	rest: 'rest',
 };
 
 export enum logColor {
@@ -66,3 +66,12 @@ export enum logColor {
 	Reverse = '\x1b[7m',
 	Underscore = '\x1b[4m',
 }
+
+export const COMPLEMENTARY_DESCRIPTION = `
+
+Notice: some of the commands may accept the [attributes] parameters in that case you can provide them with the following syntax:
+propName1:dataType,propName2:dataType, ... ,propNameNth:dataType
+
+example:
+$ controller user name:string,lastName:string,email:string,dob:date,active:boolean
+`;

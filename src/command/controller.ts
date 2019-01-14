@@ -1,7 +1,6 @@
 import { parse, join } from 'path';
-import * as cli from 'commander';
 import { ICommand, INewFileOpts } from '../interface';
-import { newFileFromTemplate, moduleNameParse, attributesParse } from '../lib';
+import { newFileFromTemplate, moduleNameParse, attributesParse, forceOption } from '../lib';
 import { DEFAULT_ATTRIBUTES, appRegEx, projectSrcFolder, projectRootFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 
@@ -9,10 +8,9 @@ export class Controller implements ICommand {
 	command = 'controller';
 	alias = 'c';
 	syntax = `${this.command} <name> [attributes]`;
-	description = `helps you create a new <name> controller file with [attributes] in "prop:dataType,prop:dataType" format`;
+	description = `helps you create a new controller file <name>`;
 
 	action(nameArg: string, attrsStr = DEFAULT_ATTRIBUTES) {
-		const { force = false } = cli;
 		const { name } = parse(nameArg);
 
 		if (!appRegEx.moduleName.test(name)) {
@@ -28,7 +26,7 @@ export class Controller implements ICommand {
 			template: 'controller',
 			path: join(projectRootFolder.src, projectSrcFolder.controller, name),
 			data,
-			overwrite: force,
+			overwrite: forceOption(),
 		};
 
 		return newFileFromTemplate(args);
