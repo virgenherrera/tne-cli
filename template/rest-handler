@@ -4,13 +4,13 @@ import { <%- className%>Controller } from '../../controller/<%- fileName%>';
 
 /* <%- className%> Rest Handler Class */
 @ExpressRouter
-export default class <%- className%>Handler {
+export default class <%- className%>RestHandler {
 	@Endpoint({
 		method: 'GET',
-		path: Routes.<%- functionName%>,
+		path: Routes.<%- plural%>,
 		middleware: [],
 	})
-	static async get_<%- className%>s(req: IRequest, res: IResponse) {
+	static async get_<%- plural%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
 			const params = req.mapReqToObj('query', 'pager');
@@ -24,10 +24,10 @@ export default class <%- className%>Handler {
 
 	@Endpoint({
 		method: 'GET',
-		path: Routes.<%- functionName%>Id,
+		path: Routes.<%- singular%>,
 		middleware: [],
 	})
-	static async get_<%- className%>(req: IRequest, res: IResponse) {
+	static async get_<%- singular%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
 			const { params } = req;
@@ -41,10 +41,10 @@ export default class <%- className%>Handler {
 
 	@Endpoint({
 		method: 'POST',
-		path: Routes.<%- functionName%>,
+		path: Routes.<%- plural%>,
 		middleware: [],
 	})
-	static async post_<%- className%>(req: IRequest, res: IResponse) {
+	static async post_<%- plural%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
 			const params = req.body;
@@ -58,10 +58,10 @@ export default class <%- className%>Handler {
 
 	@Endpoint({
 		method: 'PUT',
-		path: Routes.<%- functionName%>Id,
+		path: Routes.<%- singular%>,
 		middleware: [],
 	})
-	static async put_<%- className%>(req: IRequest, res: IResponse) {
+	static async put_<%- singular%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
 			const params = req.mapReqToObj('params', 'body');
@@ -75,10 +75,10 @@ export default class <%- className%>Handler {
 
 	@Endpoint({
 		method: 'DELETE',
-		path: Routes.<%- functionName%>Id,
+		path: Routes.<%- singular%>,
 		middleware: [],
 	})
-	static async delete_<%- className%>(req: IRequest, res: IResponse) {
+	static async delete_<%- singular%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
 			const params = req.mapReqToObj('params');

@@ -34,7 +34,7 @@ export class <%- className%>Controller {
 
 	async listAction({ <%- attrKeys.join(', ') %>, sort, page, per_page }): Promise<IPagedDto<<%- className%>>> {
 		const serviceUrl = ExpressApplication.instance.getConfig('serviceUrl', '');
-		const uri = resolve(serviceUrl, Routes.Device);
+		const uri = resolve(serviceUrl, Routes.<%- plural%>);
 		const dto = validateSchema({ <%- attrKeys.join(', ') %> }, <%- functionName%>Validate.list);
 		const filters = new <%- className%>ListFilters(dto, sort, page, per_page);
 		const { count, rows } = await <%- className%>Repository.instance.FindAndCount(filters);

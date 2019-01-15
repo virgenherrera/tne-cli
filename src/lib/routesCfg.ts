@@ -3,8 +3,8 @@ import { mkdir } from 'shelljs';
 import { projectRootFolder, projectSrcFolder, rwFilePerm } from '../constant/defaults';
 import ColorConsole from './colorConsole';
 import { writeFileSync, readFileSync } from 'fs';
-import { moduleNameParse } from './moduleNameParse';
 import { fileExists, pathExists } from '@tne/common';
+import { IModuleNames } from '../interface';
 
 const fileHeader = `import { Config, Prefix } from '@tne/express-app';
 
@@ -24,17 +24,18 @@ export function generateRoutesCfgFile(content: string = null) {
 	const fileContents = (content) ? content : fileHeader + fileFooter;
 
 	if (content) {
-		ColorConsole.green(`Creating routes file in: ${routesCfgFilePath}`);
+		ColorConsole.green(`Updating routes file in: ${routesCfgFilePath}`);
 	}
 
 	writeFileSync(routesCfgFilePath, fileContents, { encoding: 'utf8', mode });
 }
 
-export function addRoutesToConfig(routeName: string, prefix: string = 'apiV1'): void {
-	const { functionName, fileName } = moduleNameParse(routeName);
-	const generalRoute = routesProp.replace(':prefix', prefix).replace(':propName', functionName).replace(':routePath', fileName);
-	const particularRoute = routesProp.replace(':prefix', prefix).replace(':propName', `${functionName}Id`).replace(':routePath', `${fileName}/:id`);
-	const concatStr = generalRoute + '\n\t' + particularRoute + '\n';
+export function addRoutesToConfig(names: IModuleNames, prefix: string = 'apiV1'): void {
+	const { singular, plural, routePath } = names;
+	const pluralRoute = routesProp.replace(':prefix', prefix).replace(':propName', plural).replace(':routePath', routePath);
+	const singularRoute = routesProp.replace(':prefix', prefix).replace(':propName', singular).replace(':routePath', `${routePath}/:id`);
+	const concatStr = pluralRoute + '\n\t' + singularRoute + '\n';
+
 
 	if (!pathExists(cfgPath)) {
 		mkdir('-p', cfgPath);

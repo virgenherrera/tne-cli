@@ -3,4 +3,7 @@ export interface IModuleNames {
 	fileName: string;
 	functionName: string;
 	IName: string;
+	routePath: string;
+	plural: string;
+	singular: string;
 }

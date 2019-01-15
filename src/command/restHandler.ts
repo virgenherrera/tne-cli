@@ -5,7 +5,7 @@ import { appRegEx, projectRootFolder, projectSrcFolder, projectHandlerFolder } f
 import ColorConsole from '../lib/colorConsole';
 import { addRoutesToConfig } from '../lib/routesCfg';
 
-export class RestHandler implements ICommand {
+export default class RestHandler implements ICommand {
 	command = 'rest-handler';
 	alias = 'rh';
 	syntax = `${this.command} <name>`;
@@ -34,6 +34,6 @@ export class RestHandler implements ICommand {
 		if (!success) { return; }
 
 		// append to config/Routes
-		addRoutesToConfig(data.functionName);
+		addRoutesToConfig(data);
 	}
 }

@@ -3,7 +3,7 @@ import { appRegEx } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 import { createFolderStructure, forceOption } from '../lib';
 
-export class New implements ICommand {
+export default class New implements ICommand {
 	command = 'new';
 	alias = 'n';
 	syntax = `${this.command} <path>`;

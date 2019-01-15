@@ -47,6 +47,7 @@
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
     "ejs": "^2.6.1",
+    "pluralize": "^7.0.0",
     "shelljs": "^0.8.3"
   },
   "devDependencies": {
@@ -56,6 +57,7 @@
     "@types/ejs": "^2.6.1",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.5.8",
+    "@types/pluralize": "0.0.29",
     "@types/rimraf": "^2.0.2",
     "@types/shelljs": "^0.8.1",
     "chai": "^4.1.2",
