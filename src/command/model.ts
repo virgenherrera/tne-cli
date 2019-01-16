@@ -1,9 +1,8 @@
 import { parse, join } from 'path';
 import { ICommand, INewFileOpts } from '../interface';
-import { newFileFromTemplate, moduleNameParse, attributesParse, forceOption } from '../lib';
+import { newFileFromTemplate, moduleNameParse, attributesParse, forceOption, modelContents } from '../lib';
 import { DEFAULT_ATTRIBUTES, appRegEx, projectSrcFolder, projectRootFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
-import { dd } from '@tne/common';
 
 export default class Controller implements ICommand {
 	command = 'model';
@@ -19,13 +18,12 @@ export default class Controller implements ICommand {
 			process.exit(1);
 		}
 
+		const parsedAttrs = attributesParse(attrsStr);
 		const data = {
 			...moduleNameParse(name),
-			...attributesParse(attrsStr),
+			...parsedAttrs,
+			...modelContents(parsedAttrs.attributes)
 		};
-
-
-		dd(data);
 
 		const args: INewFileOpts = {
 			template: 'model',
