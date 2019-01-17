@@ -3,7 +3,7 @@ import { ICommand } from '../interface';
 import { DEFAULT_ATTRIBUTES, appRegEx } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 import RestHandler from './restHandler';
-import Controller from './model';
+import Controller from './controller';
 import Model from './model';
 import Poco from './poco';
 import Repository from './repository';

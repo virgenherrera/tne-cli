@@ -1,5 +1,5 @@
-import { <%- IName %> } from '../model/<%- fileName %>';
 import { parseSort } from '@tne/express-app';
+import { <%- IName %> } from '../model/<%- fileName %>';
 
 export class <%- className %> implements <%- IName %> {
 	id;<%- propDeclaration %>
