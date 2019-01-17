@@ -33,7 +33,7 @@ export const projectSrcFolder = {
 	repository: 'repository',
 	service: 'service',
 	config: 'config',
-	validate: 'validate',
+	validator: 'validator',
 };
 
 export const projectHandlerFolder = {

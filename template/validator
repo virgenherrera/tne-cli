@@ -1,0 +1,26 @@
+import { joi } from '@tne/express-app';
+
+const id = joi.string().hex().length(24).required();
+const mainSchema = {<%- mainSchema %>};
+const createSchema = {<%- creationSchema %>};
+const removeSchema = {
+	id,
+	softDelete: joi.boolean().default(true),
+};
+const editSchema = {
+	id,
+	...mainSchema
+};
+const findSchema = {
+	id,
+};
+const listSchema = {
+	...mainSchema,
+	sort: joi.string(),
+};
+
+export const create = joi.object().keys(createSchema);
+export const remove = joi.object().keys(removeSchema);
+export const edit = joi.object().keys(editSchema);
+export const find = joi.object().keys(findSchema);
+export const list = joi.object().keys(listSchema);
