@@ -4,7 +4,7 @@ import { newFileFromTemplate, moduleNameParse, attributesParse, forceOption, mod
 import { DEFAULT_ATTRIBUTES, appRegEx, projectSrcFolder, projectRootFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 
-export default class Controller implements ICommand {
+export default class Model implements ICommand {
 	command = 'model';
 	alias = 'm';
 	syntax = `${this.command} <name> [attributes]`;
