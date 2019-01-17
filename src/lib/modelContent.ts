@@ -2,7 +2,7 @@ import { ITplAttr } from '../interface';
 
 const propNameReplacer = ':propName';
 const dataTypeReplacer = ':dataType';
-const strPropsReplacer = ':strProps';
+const strPropsReplacer = ':strProp';
 const interfaceTpl = `${'\n'}	${propNameReplacer}: ${dataTypeReplacer};`;
 const strSchemaProps = `
 		trim: true,
