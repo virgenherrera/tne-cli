@@ -5,4 +5,5 @@ export { modelContents } from './modelContent';
 export { moduleNameParse } from './moduleNameParse';
 export { pocoContents } from './pocoContents';
 export { readTemplate, writeTemplate, newFileFromTemplate } from './templateUtils';
+export { repositoryContents } from './repositoryContents';
 export { validatorContents } from './validatorContents';

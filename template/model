@@ -8,6 +8,16 @@ interface <%- IName%>Model extends <%- IName%>, Document {
 }
 
 export const <%- className%>Schema: Schema = new Schema({<%- schemaContent %>
+	deletedAt: {
+		index: false,
+		unique: false,
+		required: false,
+		type: Date,
+		trim: true,
+		select: true,
+		default: null,
+		set: (val: boolean) => (val === true) ? Date.now() : null,
+	}
 },
 	{
 		timestamps: true

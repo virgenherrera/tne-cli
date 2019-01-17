@@ -1,21 +1,25 @@
 import { <%- IName %> } from '../model/<%- fileName %>';
-import { parseSort } from '../lib/parseSort';
+import { parseSort } from '@tne/express-app';
 
 export class <%- className %> implements <%- IName %> {
 	id;<%- propDeclaration %>
 	createdAt;
+	deletedAt;
 	updatedAt;
 
-	constructor(params: any = {}) {
+	constructor(params: any) {
+		params = new Object(params);
+
 		this.id = params.id || `${params._id}`;<%- propAssign %>
 		this.createdAt = params.createdAt;
+		this.deletedAt = params.deletedAt;
 		this.updatedAt = params.updatedAt;
 	}
 }
 
 export class <%- className %>ListFilters {
+	query: any = { deletedAt: { $ne: null } };
 	queryStringArgs: any = {};
-	query: any = {};
 	sort: any = {};
 
 	constructor({ <%- listFilterDestruct %>}, sort: any = null, public page: number, public per_page: number) {<%- filterParse %>
