@@ -40,7 +40,7 @@
     "tsc:watch": "./node_modules/.bin/tsc -w --sourceMap"
   },
   "bin": {
-    "tne": "./cli.js"
+    "tne": "./bin/cli"
   },
   "dependencies": {
     "@tne/common": "^1.0.1",
