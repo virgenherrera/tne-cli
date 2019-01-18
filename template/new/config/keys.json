@@ -1,0 +1,33 @@
+{
+  "jwt": {
+    "secret": "NQ5DPC8ZRK"
+  },
+  "mongodb": {
+    "development": {
+      "host": "mongodb://localhost:27017",
+      "db": "databaseName",
+      "options": {}
+    },
+    "production": {
+      "host": "mongodb://localhost:27017",
+      "db": "databaseName",
+      "options": {}
+    },
+    "qa": {
+      "host": "mongodb://localhost:27017",
+      "db": "databaseName",
+      "options": {}
+    },
+    "staging": {
+      "host": "mongodb://localhost:27017",
+      "db": "databaseName",
+      "options": {}
+    }
+  },
+  "system": {
+    "logs": {
+      "user": "root",
+      "pass": "root"
+    }
+  }
+}

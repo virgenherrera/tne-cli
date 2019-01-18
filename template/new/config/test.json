@@ -1,0 +1,14 @@
+{
+  "port": 3060,
+  "serviceUrl": "http://localhost:3060",
+  "webServiceUrl": "http://localhost:4200",
+  "jwtSecret": "$keys.jwt.secret",
+  "jwtExp": "14d",
+  "mongodbHost": "$keys.mongodb.development.host",
+  "mongodbDb": "$keys.mongodb.development.db",
+  "mongodbOptions": "$keys.mongodb.development.options",
+  "logs": {
+    "user": "$keys.system.logs.user",
+    "pass": "$keys.system.logs.pass"
+  }
+}
