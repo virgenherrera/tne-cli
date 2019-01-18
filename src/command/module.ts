@@ -13,7 +13,7 @@ export default class Module implements ICommand {
 	command = 'module';
 	alias = 'm';
 	syntax = `${this.command} <name> [attributes]`;
-	description = `helps you create a new module file <name>`;
+	description = `Create one following files: Controller, Model, Poco, Repository, RestHandler, Validator.`;
 
 	action(nameArg: string, attrsStr = DEFAULT_ATTRIBUTES) {
 		const { name } = parse(nameArg);

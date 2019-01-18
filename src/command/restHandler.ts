@@ -4,12 +4,13 @@ import { forceOption, newFileFromTemplate, moduleNameParse } from '../lib';
 import { appRegEx, projectRootFolder, projectSrcFolder, projectHandlerFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 import { addRoutesToConfig } from '../lib/routesCfg';
+import { ToTitleCase } from '@tne/common';
 
 export default class RestHandler implements ICommand {
 	command = 'rest-handler';
 	alias = 'rh';
 	syntax = `${this.command} <name>`;
-	description = `helps you create a new Rest-Handler file <name>`;
+	description = `Creates a new ${ToTitleCase(this.command)} file.`;
 
 	action(nameArg) {
 		const { name } = parse(nameArg);

@@ -13,12 +13,13 @@ export function readTemplate(templateName: templateTypes): string {
 	return `${readFileSync(templatePath)}`;
 }
 
-export function writeTemplate(path: string, fileContents: string, fPerms: filePermissions = 'rw'): void {
+export function writeStrToFile(destinyPath: string, fileContents: string, fPerms: filePermissions = 'rw'): void {
 	const mode: number = (fPerms === 'rwx') ? rwxFilePerm : rwFilePerm;
+	const { name, ext } = parse(destinyPath);
 
-	ColorConsole.green(`Writing file: "${path}"`);
+	ColorConsole.blueBright(`- Writing file: "${name + ext}"`);
 
-	writeFileSync(path, fileContents, { encoding: 'utf8', mode });
+	writeFileSync(destinyPath, fileContents, { encoding: 'utf8', mode });
 }
 
 export function newFileFromTemplate(args: INewFileOpts): boolean {
@@ -43,7 +44,7 @@ export function newFileFromTemplate(args: INewFileOpts): boolean {
 		ColorConsole.yellow(`Overwriting the file: "${filePath}" since option --force has been received.${'\n'}`);
 	}
 
-	writeTemplate(filePath, fileContents, fPerms);
+	writeStrToFile(filePath, fileContents, fPerms);
 
 	success = true;
 	return success;

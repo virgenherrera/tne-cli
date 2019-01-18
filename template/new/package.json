@@ -11,6 +11,15 @@
     "typescript",
     "node"
   ],
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
+  "bugs": {
+    "url": ""
+  },
   "contributors": [],
   "scripts": {
     "start": "node ./dist/index.js",

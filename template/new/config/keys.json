@@ -1,5 +1,5 @@
 {
-  "jwt": {
+  "app": {
     "secret": "NQ5DPC8ZRK"
   },
   "mongodb": {
@@ -13,21 +13,10 @@
       "db": "databaseName",
       "options": {}
     },
-    "qa": {
+    "test": {
       "host": "mongodb://localhost:27017",
       "db": "databaseName",
       "options": {}
-    },
-    "staging": {
-      "host": "mongodb://localhost:27017",
-      "db": "databaseName",
-      "options": {}
-    }
-  },
-  "system": {
-    "logs": {
-      "user": "root",
-      "pass": "root"
     }
   }
 }

@@ -3,6 +3,7 @@ export const rwxFilePerm = parseInt('0755', 8);
 
 export const appRegEx = {
 	moduleName: /^[a-z]{1}\w+$/i,
+	appName: /[a-z0-9-_]/i,
 	jsPropName: /^[a-z_]{1}\w+$/i,
 	word: /^\w+$/i,
 	appDataType: /^(string|number|date|boolean)$/i,
@@ -14,10 +15,11 @@ export const projectRootFolder = {
 	vscode: '.vscode',
 	assets: 'assets',
 	build: 'build',
+	certs: 'certs',
 	config: 'config',
-	docs: 'docs',
 	pmCollection: 'postmanCollection',
 	public: 'public',
+	readmeFiles: 'readmeFiles',
 	src: 'src',
 	test: 'test',
 	views: 'views',
@@ -37,6 +39,7 @@ export const projectSrcFolder = {
 };
 
 export const projectHandlerFolder = {
+	realTime: 'realtime',
 	rendered: 'rendered',
 	rest: 'rest',
 };

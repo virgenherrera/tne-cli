@@ -3,12 +3,13 @@ import { ICommand, INewFileOpts } from '../interface';
 import { newFileFromTemplate, moduleNameParse, attributesParse, forceOption, modelContents } from '../lib';
 import { DEFAULT_ATTRIBUTES, appRegEx, projectSrcFolder, projectRootFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
+import { ToTitleCase } from '@tne/common';
 
 export default class Model implements ICommand {
 	command = 'model';
 	alias = 'm';
 	syntax = `${this.command} <name> [attributes]`;
-	description = `helps you create a new model file <name>`;
+	description = `Creates a new ${ToTitleCase(this.command)} file.`;
 
 	action(nameArg: string, attrsStr = DEFAULT_ATTRIBUTES) {
 		const { name } = parse(nameArg);
