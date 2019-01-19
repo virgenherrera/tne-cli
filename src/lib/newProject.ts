@@ -92,9 +92,11 @@ export function newProject(pathParam: string, force: boolean = false): void {
 }
 
 export function prepareProject(projectPath: string, moduleNames: IModuleNames) {
+	const selfpackagePath = join(__dirname, '../../package.json');
 	const packagePath = join(projectPath, 'package.json');
 	const readmePath = join(projectPath, 'README.md');
 	const keysPath = join(projectPath, 'config/keys.json');
+	const selfPackageData = require(selfpackagePath);
 	const packageData = require(packagePath);
 	const keysData = require(keysPath);
 	const readmeTpl = `${readFileSync(readmePath, { encoding: 'utf8' })}`;
@@ -109,6 +111,13 @@ export function prepareProject(projectPath: string, moduleNames: IModuleNames) {
 	packageData.repository.url = `git+https://github.com/your_username/${moduleNames.fileName}`;
 	packageData.homepage = 'https://https://github.com/your_username/${moduleNames.fileName}#readme';
 	packageData.bugs.url = 'https://https://github.com/your_username/${moduleNames.fileName/issues';
+
+	packageData.devDependencies[selfPackageData.name] = selfPackageData.version;
+
+	const orderedDevDependencies = {};
+	Object.keys(packageData.devDependencies).sort().forEach(k => orderedDevDependencies[k] = packageData.devDependencies[k]);
+	packageData.devDependencies = orderedDevDependencies;
+
 	keysData.app.secret = `${Array(3).fill(null).map(genRandStr).join('')}`;
 	keysData.mongodb.development.db = `${moduleNames.className}_development`;
 	keysData.mongodb.production.db = `${moduleNames.className}_production`;

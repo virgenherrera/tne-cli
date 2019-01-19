@@ -22,15 +22,16 @@
   },
   "contributors": [],
   "scripts": {
-    "start": "node ./dist/index.js",
-    "dev": "nodemon ./src/index.ts",
-    "test": "npm run tslint && nyc mocha",
-    "prestart": "npm run build",
     "build": "npm run cleanup && npm run test && npm run tsc",
     "cleanup": "rimraf .nyc_output dist coverage",
-    "tslint": "tslint -c ./tslint.json -p ./tsconfig.json",
+    "dev": "nodemon ./src/index.ts",
+    "prestart": "npm run build",
+    "start": "node ./dist/index.js",
+    "test": "npm run tslint && nyc mocha",
+    "tne": "tne",
+    "tsc:watch": "tsc -w --sourceMap",
     "tsc": "tsc",
-    "tsc:watch": "tsc -w --sourceMap"
+    "tslint": "tslint -c ./tslint.json -p ./tsconfig.json"
   },
   "dependencies": {
     "@tne/express-app": "^1.2.9",
