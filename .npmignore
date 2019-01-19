@@ -1,10 +1,21 @@
-*
-!dist/
-!dist/*
-!dist/**/*
-!definitions/
-!definitions/*
-!*.ts
-!lib/*.ts
-!package.json
-!*.md
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output/
+
+# vsCode config
+.vscode/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm/
+
+# typescript code
+src/
+
+# typescript code
+test/

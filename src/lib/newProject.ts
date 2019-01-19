@@ -1,7 +1,7 @@
 import { render } from 'ejs';
 import { join, parse } from 'path';
 import { readdirSync, readFileSync } from 'fs';
-import { mkdir, cp, rm } from 'shelljs';
+import { mkdir, cp, rm, mv } from 'shelljs';
 import { pathExists } from '@tne/common';
 import ColorConsole from './colorConsole';
 import { projectRootFolder, projectSrcFolder, projectHandlerFolder, appRegEx } from '../constant/defaults';
@@ -10,7 +10,7 @@ import { IModuleNames } from '../interface';
 import { writeStrToFile } from './templateUtils';
 import { execSync } from 'child_process';
 
-function genRandStr() {
+export function genRandStr() {
 	return Math.random().toString(36).slice(2).toUpperCase();
 }
 
@@ -46,6 +46,43 @@ export function createFolderStructure(projectPath: string): void {
 	});
 }
 
+export function interpolateProjectVars(projectPath: string, moduleNames: IModuleNames) {
+	const selfPackagePath = join(__dirname, '../../package.json');
+	const packagePath = join(projectPath, 'package.json');
+	const readmePath = join(projectPath, 'README.md');
+	const keysPath = join(projectPath, 'config/keys.json');
+	const selfPackageData = require(selfPackagePath);
+	const packageData = require(packagePath);
+	const keysData = require(keysPath);
+	const readmeTpl = `${readFileSync(readmePath, { encoding: 'utf8' })}`;
+	const readmeData = {
+		name: moduleNames.fileName,
+		description: packageData.description,
+	};
+	const readmeContents = render(readmeTpl, readmeData);
+
+	// inject data to json files
+	packageData.name = moduleNames.fileName;
+	packageData.repository.url = `git+https://github.com/your_username/${moduleNames.fileName}`;
+	packageData.homepage = `https://https://github.com/your_username/${moduleNames.fileName}#readme`;
+	packageData.bugs.url = `https://https://github.com/your_username/${moduleNames.fileName}/issues`;
+
+	packageData.devDependencies[selfPackageData.name] = selfPackageData.version;
+
+	const orderedDevDependencies = {};
+	Object.keys(packageData.devDependencies).sort().forEach(k => orderedDevDependencies[k] = packageData.devDependencies[k]);
+	packageData.devDependencies = orderedDevDependencies;
+
+	keysData.app.secret = `${Array(3).fill(null).map(genRandStr).join('')}`;
+	keysData.mongodb.development.db = `${moduleNames.className}_development`;
+	keysData.mongodb.production.db = `${moduleNames.className}_production`;
+	keysData.mongodb.test.db = `${moduleNames.className}_test`;
+
+	writeStrToFile(packagePath, JSON.stringify(packageData, null, 2));
+	writeStrToFile(keysPath, JSON.stringify(keysData, null, 2));
+	writeStrToFile(readmePath, readmeContents);
+}
+
 export function newProject(pathParam: string, force: boolean = false): void {
 	if (!appRegEx.appName.test(pathParam)) {
 		ColorConsole.red(`"${pathParam}" is not a valid name for a new TNE application.`);
@@ -69,61 +106,29 @@ export function newProject(pathParam: string, force: boolean = false): void {
 		rm('-Rf', destinyPath);
 	}
 
-	ColorConsole.blueBright(`- initializing folder structure...`);
-
 	// copy sample project to target
+	ColorConsole.blueBright(`- initializing folder structure...`);
 	cp('-Rf', originPath, destinyPath);
+
+	// rename gitignore to .gitignore
+	const gitignoreFilePath = join(destinyPath, 'gitignore');
+	const _gitignoreFilePath = join(destinyPath, '.gitignore');
+	ColorConsole.blueBright(`- Writing file: ".gitignore"`);
+	mv('-f', gitignoreFilePath, _gitignoreFilePath);
 
 	// task2 complete dirStructure
 	createFolderStructure(destinyPath);
 
 	// prepare new project
-	prepareProject(destinyPath, parsedNames);
+	interpolateProjectVars(destinyPath, parsedNames);
 
 	// install project
 	ColorConsole.blueBright(`- installing project dependencies...`);
 	execSync(`npm install`, { encoding: 'utf-8', stdio: 'inherit', cwd: destinyPath });
 
 	ColorConsole.greenBright(
-		'I have completed the creation of your project successfully!',
-		`Your new project is located in the path: "${destinyPath}"`,
-		'\n\tNow build an awesome product!'
+		'- Project creation completed!',
+		`Project location: "${destinyPath}"`,
+		'\n\n\tNow build an awesome product!!!\n\n'
 	);
-}
-
-export function prepareProject(projectPath: string, moduleNames: IModuleNames) {
-	const selfpackagePath = join(__dirname, '../../package.json');
-	const packagePath = join(projectPath, 'package.json');
-	const readmePath = join(projectPath, 'README.md');
-	const keysPath = join(projectPath, 'config/keys.json');
-	const selfPackageData = require(selfpackagePath);
-	const packageData = require(packagePath);
-	const keysData = require(keysPath);
-	const readmeTpl = `${readFileSync(readmePath, { encoding: 'utf8' })}`;
-	const readmeData = {
-		name: moduleNames.fileName,
-		description: packageData.description,
-	};
-	const readmeContents = render(readmeTpl, readmeData);
-
-	// inject data to json files
-	packageData.name = moduleNames.fileName;
-	packageData.repository.url = `git+https://github.com/your_username/${moduleNames.fileName}`;
-	packageData.homepage = 'https://https://github.com/your_username/${moduleNames.fileName}#readme';
-	packageData.bugs.url = 'https://https://github.com/your_username/${moduleNames.fileName/issues';
-
-	packageData.devDependencies[selfPackageData.name] = selfPackageData.version;
-
-	const orderedDevDependencies = {};
-	Object.keys(packageData.devDependencies).sort().forEach(k => orderedDevDependencies[k] = packageData.devDependencies[k]);
-	packageData.devDependencies = orderedDevDependencies;
-
-	keysData.app.secret = `${Array(3).fill(null).map(genRandStr).join('')}`;
-	keysData.mongodb.development.db = `${moduleNames.className}_development`;
-	keysData.mongodb.production.db = `${moduleNames.className}_production`;
-	keysData.mongodb.test.db = `${moduleNames.className}_test`;
-
-	writeStrToFile(packagePath, JSON.stringify(packageData, null, 2));
-	writeStrToFile(keysPath, JSON.stringify(keysData, null, 2));
-	writeStrToFile(readmePath, readmeContents);
 }
