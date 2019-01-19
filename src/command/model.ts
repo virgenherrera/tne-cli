@@ -9,7 +9,7 @@ export default class Model implements ICommand {
 	command = 'model';
 	alias = 'm';
 	syntax = `${this.command} <name> [attributes]`;
-	description = `Creates a new ${ToTitleCase(this.command)} file.`;
+	description = `Create a ${ToTitleCase(this.command)} source file`;
 
 	action(nameArg: string, attrsStr = DEFAULT_ATTRIBUTES) {
 		const { name } = parse(nameArg);

@@ -1,4 +1,5 @@
 export { attributesParse } from './attributeParse';
+export { autoGenSslCert } from './autoGenSslCert';
 export { createFolderStructure } from './newProject';
 export { forceOption } from './cliOpts';
 export { modelContents } from './modelContent';

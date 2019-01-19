@@ -10,7 +10,7 @@ export default class RestHandler implements ICommand {
 	command = 'rest-handler';
 	alias = 'rh';
 	syntax = `${this.command} <name>`;
-	description = `Creates a new ${ToTitleCase(this.command)} file.`;
+	description = `Create a ${ToTitleCase(this.command)} source file`;
 
 	action(nameArg) {
 		const { name } = parse(nameArg);
