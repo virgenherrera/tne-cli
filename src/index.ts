@@ -3,6 +3,7 @@ import { commands } from './command';
 import ColorConsole from './lib/colorConsole';
 import { COMPLEMENTARY_DESCRIPTION } from './constant/defaults';
 const appPackage = require('../package.json');
+const vFlags = ['-v', '--version'];
 const availableCommands = [];
 
 const { chalk } = ColorConsole;
@@ -11,7 +12,7 @@ const description = chalk.white(appPackage.description);
 const complementary = chalk.blueBright(COMPLEMENTARY_DESCRIPTION);
 
 cli
-	.version(appPackage.version)
+	.version(appPackage.version, vFlags.join(', '))
 	.description(`${description}${complementary}`)
 	.option('-f, --force', 'forces cli to overwrite files if any.');
 
@@ -27,7 +28,7 @@ for (const { command, syntax = null, alias, description, action } of commands[Sy
 
 // if none or invalid option was received
 const [, , firstArg = null] = process.argv;
-if (availableCommands.indexOf(firstArg) < 0) {
+if (['-h', '--help', ...vFlags, ...availableCommands].indexOf(firstArg) < 0) {
 	ColorConsole.blueBright('@tne/cli help');
 
 	if (firstArg) {
