@@ -60,7 +60,7 @@ export class <%- className %>Repository {
 	}
 
 	async GetAll({ query, sort, page, per_page }: <%- className %>ListFilters): Promise<IGetAll<<%- className %>>> {
-		const count = await Model.count(query).exec();
+		const count = await Model.countDocuments(query).exec();
 
 		if (count < 1) {
 			return { count, rows: [] };

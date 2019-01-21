@@ -11,7 +11,7 @@ import Validator from './validator';
 
 export default class Module implements ICommand {
 	command = 'module';
-	alias = 'm';
+	alias = 'mod';
 	syntax = `${this.command} <name> [attributes]`;
 	description = `Create one following files: Controller, Model, Poco, Repository, RestHandler, Validator.`;
 

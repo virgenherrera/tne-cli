@@ -3,6 +3,9 @@ import { ITplAttr } from '../interface';
 const propNameReplacer = ':propName';
 const dataTypeReplacer = ':dataType';
 const strPropsReplacer = ':strProp';
+const propNameRegEx = new RegExp(propNameReplacer, 'g');
+const dataTypeRegEx = new RegExp(dataTypeReplacer, 'g');
+const strPropsRegEx = new RegExp(strPropsReplacer, 'g');
 const interfaceTpl = `${'\n'}	${propNameReplacer}: ${dataTypeReplacer};`;
 const strSchemaProps = `
 		trim: true,
@@ -44,8 +47,8 @@ export function modelInterfaceContent(attrs: ITplAttr[]): string {
 
 		if (attribute && Object.keys(tsDataTypes).indexOf(lowerType) > -1) {
 			acc += interfaceTpl
-				.replace(propNameReplacer, attribute)
-				.replace(dataTypeReplacer, tsDataTypes[lowerType]);
+				.replace(propNameRegEx, attribute)
+				.replace(dataTypeRegEx, tsDataTypes[lowerType]);
 		}
 
 		return acc;
@@ -59,9 +62,9 @@ export function modelSchemaContent(attrs: ITplAttr[]): string {
 		if (attribute && Object.keys(jsDataTypes).indexOf(lowerType) > -1) {
 			const strTypeProps = (lowerType === 'string') ? strSchemaProps : '';
 			acc += schemaPropTpl
-				.replace(propNameReplacer, attribute)
-				.replace(dataTypeReplacer, jsDataTypes[lowerType])
-				.replace(strPropsReplacer, strTypeProps);
+				.replace(propNameRegEx, attribute)
+				.replace(dataTypeRegEx, jsDataTypes[lowerType])
+				.replace(strPropsRegEx, strTypeProps);
 		}
 
 		return acc;
