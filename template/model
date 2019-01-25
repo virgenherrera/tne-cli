@@ -1,0 +1,29 @@
+import { Document, Schema, Model, model } from 'mongoose';
+
+export interface <%- IName%> {<%- IDeclaration %>
+	deletedAt: Date;
+}
+
+interface <%- IName%>Model extends <%- IName%>, Document {
+	// Additional Model contracts here!
+}
+
+export const <%- className%>Schema: Schema = new Schema({<%- schemaContent %>
+	deletedAt: {
+		index: false,
+		unique: false,
+		required: false,
+		type: Date,
+		trim: true,
+		select: true,
+		default: null,
+		set: (val: boolean) => (val === true) ? Date.now() : null,
+	}
+},
+	{
+		timestamps: true
+	}
+);
+
+export const collectionName = '<%- className%>';
+export const <%- className%>Model: Model<<%- IName%>Model> = model<<%- IName%>Model>(collectionName, <%- className%>Schema);

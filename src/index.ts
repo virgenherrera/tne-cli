@@ -1,16 +1,22 @@
 import * as cli from 'commander';
-import commands from './command';
-import { ICommand } from './interface';
-// import { Dictionary } from './lib/dictionary';
-const { version, description } = require('../package.json');
+import { commands } from './command';
+import ColorConsole from './lib/colorConsole';
+import { COMPLEMENTARY_DESCRIPTION } from './constant/defaults';
+const appPackage = require('../package.json');
+const vFlags = ['-v', '--version'];
 const availableCommands = [];
-const [, , command] = process.argv;
+
+const { chalk } = ColorConsole;
+
+const description = chalk.white(appPackage.description);
+const complementary = chalk.blueBright(COMPLEMENTARY_DESCRIPTION);
 
 cli
-	.version(version)
-	.description(description);
+	.version(appPackage.version, vFlags.join(', '))
+	.description(`${description}${complementary}`)
+	.option('-f, --force', 'forces cli to overwrite files if any.');
 
-for (const { command, syntax = null, alias, description, action } of <ICommand[]>commands) {
+for (const { command, syntax = null, alias, description, action } of commands[Symbol.iterator]()) {
 	availableCommands.push(command, alias);
 
 	cli
@@ -21,7 +27,14 @@ for (const { command, syntax = null, alias, description, action } of <ICommand[]
 }
 
 // if none or invalid option was received
-if (!process.argv.slice(2).length || availableCommands.indexOf(command) < 0) {
+const [, , firstArg = null] = process.argv;
+if (['-h', '--help', ...vFlags, ...availableCommands].indexOf(firstArg) < 0) {
+	ColorConsole.blueBright('@tne/cli help');
+
+	if (firstArg) {
+		ColorConsole.yellow(`${'\n\t'}unknown command received: "${firstArg}"${'\n'}`);
+	}
+
 	cli.outputHelp();
 	process.exit();
 }

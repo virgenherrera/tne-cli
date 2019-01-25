@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>static page</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		pre {
+			box-sizing: border-box;
+			width: 100%;
+			padding: 0;
+			margin: 0;
+			overflow: auto;
+			overflow-y: hidden;
+			font-size: 12px;
+			line-height: 20px;
+			background: #efefef;
+			border: 1px solid #777;
+			background: url(lines.png) repeat 0 0;
+			padding: 10px;
+			color: #333;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Welcome to @tne/express-app</h1>
+	<h2>system health data</h2>
+	<script>
+		var xhr = new XMLHttpRequest();
+
+		xhr.onload = function () {
+			if (xhr.status >= 200 && xhr.status < 300) {
+				var res = JSON.parse(xhr.response);
+				var pre = document.createElement('pre');
+
+				pre.textContent = JSON.stringify(res.data, null, 2);
+				document.body.appendChild(pre);
+			} else {
+				throw new Error('The request to system/health has failed!');
+			}
+		}
+
+		xhr.open('GET', 'http://localhost:3000/api/v1/system/health');
+		xhr.send();
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+import { ExpressRouter, Endpoint, IRequest, IResponse } from '@tne/express-app';
+import { Routes } from '../../config/routes';
+import { <%- className%>Controller } from '../../controller/<%- fileName%>';
+
+/* <%- className%> Rest Handler Class */
+@ExpressRouter
+export default class <%- className%>RestHandler {
+	@Endpoint({
+		method: 'GET',
+		path: Routes.<%- plural%>,
+		middleware: [],
+	})
+	static async get_<%- plural%>(req: IRequest, res: IResponse) {
+		try {
+			const ctrl = new <%- className%>Controller;
+			const params = req.mapReqToObj('query', 'pager');
+			const data = await ctrl.listAction(params);
+
+			return res.successJson('GET', data);
+		} catch (E) {
+			return res.errorJson(E);
+		}
+	}
+
+	@Endpoint({
+		method: 'GET',
+		path: Routes.<%- singular%>,
+		middleware: [],
+	})
+	static async get_<%- singular%>(req: IRequest, res: IResponse) {
+		try {
+			const ctrl = new <%- className%>Controller;
+			const { params } = req;
+			const data = await ctrl.showAction(params);
+
+			return res.successJson('GET', data);
+		} catch (E) {
+			return res.errorJson(E);
+		}
+	}
+
+	@Endpoint({
+		method: 'POST',
+		path: Routes.<%- plural%>,
+		middleware: [],
+	})
+	static async post_<%- plural%>(req: IRequest, res: IResponse) {
+		try {
+			const ctrl = new <%- className%>Controller;
+			const params = req.body;
+			const data = await ctrl.createAction(params);
+
+			return res.successJson('POST', data);
+		} catch (E) {
+			return res.errorJson(E);
+		}
+	}
+
+	@Endpoint({
+		method: 'PUT',
+		path: Routes.<%- singular%>,
+		middleware: [],
+	})
+	static async put_<%- singular%>(req: IRequest, res: IResponse) {
+		try {
+			const ctrl = new <%- className%>Controller;
+			const params = req.mapReqToObj('params', 'body');
+			const data = await ctrl.editAction(params);
+
+			return res.successJson('PUT', data);
+		} catch (E) {
+			return res.errorJson(E);
+		}
+	}
+
+	@Endpoint({
+		method: 'DELETE',
+		path: Routes.<%- singular%>,
+		middleware: [],
+	})
+	static async delete_<%- singular%>(req: IRequest, res: IResponse) {
+		try {
+			const ctrl = new <%- className%>Controller;
+			const params = req.mapReqToObj('params');
+			const data = await ctrl.deleteAction(params);
+
+			return res.successJson('DELETE', data);
+		} catch (E) {
+			return res.errorJson(E);
+		}
+	}
+}

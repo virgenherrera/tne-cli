@@ -1,0 +1,48 @@
+import { ExpressApplication, joiValidate, IPagedDto } from '@tne/express-app';
+import { Routes } from '../config/routes';
+import { <%- className%>, <%- className%>ListFilters } from '../poco/<%- fileName%>';
+import { <%- className%>Repository } from '../repository/<%- fileName%>';
+import * as <%- functionName%>Schema from '../validator/<%- fileName%>';
+
+/* <%- className%> Controller Class */
+export class <%- className%>Controller {
+	static get instance (): <%- className%>Controller {
+		return new <%- className%>Controller;
+	}
+
+	async createAction(params: any): Promise<<%- className%>> {
+		const dto = joiValidate(params, <%- functionName%>Schema.create);
+		const poco = new <%- className%>(dto);
+
+		return await <%- className%>Repository.instance.Create(poco);
+	}
+
+	async deleteAction(params: any): Promise<<%- className%>> {
+		const { id, softDelete } = joiValidate(params, <%- functionName%>Schema.remove);
+
+		return await <%- className%>Repository.instance.Delete(id, softDelete);
+	}
+
+	async editAction(params: any): Promise<<%- className%>> {
+		const dto = joiValidate(params, <%- functionName%>Schema.update);
+		const poco = new <%- className%>(dto);
+
+		return await <%- className%>Repository.instance.Update(poco);
+	}
+
+	async listAction({ <%- attrKeys.join(', ') %>, sort, page, per_page }): Promise<IPagedDto<<%- className%>>> {
+		const uri = ExpressApplication.instance.serviceExternalUrl(Routes.<%- plural%>);
+		const dto = joiValidate({ <%- attrKeys.join(', ') %> }, <%- functionName%>Schema.list);
+		const filters = new <%- className%>ListFilters(dto, sort, page, per_page);
+		const { count, rows } = await <%- className%>Repository.instance.GetAll(filters);
+		const { queryStringArgs } = filters;
+
+		return { uri, rows, count, page, per_page, queryStringArgs };
+	}
+
+	async showAction(params: any): Promise<<%- className%>> {
+		const { id } = joiValidate(params, <%- functionName%>Schema.find);
+
+		return await <%- className%>Repository.instance.GetById(id);
+	}
+}

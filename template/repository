@@ -1,0 +1,113 @@
+import { parseSkipLimit, IGetAll } from '@tne/express-app';
+import { <%- className %>Model as Model } from '../model/<%- fileName %>';
+import { <%- className %>, <%- className %>ListFilters } from '../poco/<%- fileName %>';
+
+/* <%- className %> Repository Class */
+export class <%- className %>Repository {
+	static get instance(): <%- className %>Repository {
+		return new <%- className %>Repository;
+	}
+
+	async Create(poco: <%- className %>): Promise<<%- className %>> {
+		let entity = new Model(poco);
+
+		try {
+			entity = await entity.save();
+		} catch (E) {
+			throw { type: 500, message: `Error: '${E.code}' thrown by the data persistence layer.` };
+		}
+
+		return new <%- className %>(entity);
+	}
+
+	async Delete(id: string, softDelete: boolean = true, foreignProps: any = {}): Promise<<%- className %>> {
+		let entity = <any>await Model.findById(id).exec();
+
+		if (!entity) {
+			throw { type: 404, message: `There is no <%- className %> that matches the id: '${id}'.` };
+		}
+
+		Object.getOwnPropertyNames(foreignProps).forEach((key) => {
+			if (entity._doc.hasOwnProperty(key) && (`${entity._doc[key]}` !== `${foreignProps[key]}`)) {
+				throw { type: 403, message: `It is forbidden to delete a <%- className %> that does not belong to you.` };
+			}
+		});
+
+		if (softDelete) {
+			entity.deletedAt = true;
+			entity = await entity.save();
+		} else {
+			await Model.deleteOne({ _id: id }).exec();
+		}
+
+		return new <%- className %>(entity);
+	}
+
+	async FindBy(query: any = {}, fields: string = null): Promise<<%- className %>[]> {
+		const rows: any[] = await Model.find(query, fields).exec();
+
+		return rows.map(row => new <%- className %>(row));
+	}
+
+	async FindOne(query: any = {}, fields: string = null): Promise<<%- className %>> {
+		const entity = await Model.findOne(query, fields).exec();
+
+		if (!entity || entity.deletedAt) {
+			throw { type: 404, message: `There is no <%- className %> that matches the parameters: '${JSON.stringify(query)}'.` };
+		}
+
+		return new <%- className %>(entity);
+	}
+
+	async GetAll({ query, sort, page, per_page }: <%- className %>ListFilters): Promise<IGetAll<<%- className %>>> {
+		const count = await Model.countDocuments(query).exec();
+
+		if (count < 1) {
+			return { count, rows: [] };
+		}
+
+		const { skip, limit } = parseSkipLimit(page, per_page, count);
+		const data: any[] = await Model
+			.find(query)
+			.skip(skip)
+			.limit(limit)
+			.sort(sort)
+			.exec();
+		const rows = data.map(row => new <%- className %>(row));
+
+		return { count, rows };
+	}
+
+	async GetById(id: string = null ): Promise<<%- className %>> {
+		const entity = await Model.findById(id).exec();
+
+		if (!entity || entity.deletedAt) {
+			throw { type: 404, message: `There is no <%- className %> that matches the id: '${id}'.` };
+		}
+
+		return new <%- className %>(entity);
+	}
+
+	async Update(poco: <%- className %>, foreignProps: any = {}): Promise<<%- className %>> {
+		const {
+			id = null,<%- destructProps %>
+			deletedAt = null,
+		} = poco;
+		let entity = <any>await Model.findById(id).exec();
+
+		if (!entity) {
+			throw { type: 404, message: `There is no <%- className %> that matches the id: '${id}'.` };
+		}
+
+		Object.getOwnPropertyNames(foreignProps).forEach((key) => {
+			if (entity._doc.hasOwnProperty(key) && (`${entity._doc[key]}` !== `${foreignProps[key]}`)) {
+				throw { type: 403, message: `It is forbidden to edit a <%- className %> that does not belong to you.` };
+			}
+		});
+
+		<%- propUpdate %>if ([true, false].indexOf(deletedAt) > -1) { entity.deletedAt = deletedAt; }
+
+		entity = await entity.save();
+		return new <%- className %>(entity);
+	}
+}
