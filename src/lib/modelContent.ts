@@ -18,13 +18,10 @@ const schemaPropTpl = `
 		unique: false,
 		required: false,
 		type: ${dataTypeReplacer},${strPropsReplacer}
-		// default: '${propNameReplacer}_defaultValue_example',
+		// default: '${propNameReplacer}_field_default_value_example',
 		// set: (val) => {  },
 		// get: () => {  },
-		// validate: {
-		// 	validator: (val) => {  },
-		// 	message: '{VALUE} is not a valid ${propNameReplacer}!'
-		// },
+		// validate: (val) => { /* validator fn body */ },
 	},`;
 
 enum jsDataTypes {
