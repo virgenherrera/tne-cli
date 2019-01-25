@@ -1,7 +1,7 @@
 import chalk, { Chalk } from 'chalk';
 
 export default class ColorConsole {
-	get chalk(): Chalk {
+	static get chalk(): Chalk {
 		return chalk;
 	}
 

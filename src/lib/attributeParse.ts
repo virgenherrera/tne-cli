@@ -1,14 +1,15 @@
-import { logColor, appRegEx } from '../constant/defaults';
+import { appRegEx } from '../constant/defaults';
 import { ITplAttr, cliTypes, IParsedAttrs } from '../interface';
+import ColorConsole from './colorConsole';
 
 export function mapStringToAttributes(attrsStr: string): ITplAttr[] {
 	return attrsStr.split(',').reduce((acc, curr) => {
 		const [attribute = '', dataType = ''] = curr.split(':');
 
 		if (!appRegEx.jsPropName.test(attribute)) {
-			console.log(logColor.FgYellow, `Skipping ${curr} since ${attribute} are not valid javascript Property Name`);
+			ColorConsole.yellow(`Skipping ${curr} since ${attribute} are not valid javascript Property Name`);
 		} else if (!appRegEx.appDataType.test(dataType)) {
-			console.log(logColor.FgYellow, `Skipping ${curr} since ${dataType} are not valid dataType`);
+			ColorConsole.yellow(`Skipping ${curr} since ${dataType} are not valid dataType`);
 		} else {
 			acc.push({ attribute, dataType });
 		}

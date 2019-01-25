@@ -13,15 +13,16 @@ export function readTemplate(templateName: templateTypes): string {
 	return `${readFileSync(templatePath)}`;
 }
 
-export function writeTemplate(path: string, fileContents: string, fPerms: filePermissions = 'rw'): void {
+export function writeStrToFile(destinyPath: string, fileContents: string, fPerms: filePermissions = 'rw'): void {
 	const mode: number = (fPerms === 'rwx') ? rwxFilePerm : rwFilePerm;
+	const { name, ext } = parse(destinyPath);
 
-	ColorConsole.green(`Writing file: "${path}"`);
+	ColorConsole.blueBright(`- Writing file: "${name + ext}"`);
 
-	writeFileSync(path, fileContents, { encoding: 'utf8', mode });
+	writeFileSync(destinyPath, fileContents, { encoding: 'utf8', mode });
 }
 
-export function newFileFromTemplate(args: INewFileOpts): void {
+export function newFileFromTemplate(args: INewFileOpts): boolean {
 	const { template, path, data, overwrite = false, fExt = '.ts', fPerms = 'rw' } = args;
 	const furtherPath = join(process.cwd(), path);
 	const tplStr = readTemplate(template);
@@ -29,6 +30,7 @@ export function newFileFromTemplate(args: INewFileOpts): void {
 	const { dir, name } = parse(furtherPath);
 	const fileName = `${to_snake_case(name)}${fExt}`;
 	const filePath = join(dir, fileName);
+	let success = false;
 
 	if (!pathExists(dir)) {
 		ColorConsole.greenBright(`creating non-existent directory tree: "${dir}"${'\n'}`);
@@ -37,10 +39,13 @@ export function newFileFromTemplate(args: INewFileOpts): void {
 
 	if (fileExists(filePath) && !overwrite) {
 		ColorConsole.yellow(`${'\n'}The creation of the file has been omitted: "${filePath}" since it already existed.`);
-		return;
+		return success;
 	} else if (fileExists(filePath) && overwrite) {
 		ColorConsole.yellow(`Overwriting the file: "${filePath}" since option --force has been received.${'\n'}`);
 	}
 
-	writeTemplate(filePath, fileContents, fPerms);
+	writeStrToFile(filePath, fileContents, fPerms);
+
+	success = true;
+	return success;
 }
