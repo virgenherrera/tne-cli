@@ -23,6 +23,17 @@ const schemaPropTpl = `
 		// get: () => {  },
 		// validate: (val) => { /* validator fn body */ },
 	},`;
+const softDeleteSchemaContent = `
+	deletedAt: {
+		index: false,
+		unique: false,
+		required: false,
+		type: Date,
+		trim: true,
+		select: true,
+		default: null,
+		set: (val: boolean) => (val === true) ? Date.now() : null,
+	},`;
 
 enum jsDataTypes {
 	boolean = 'Boolean',
@@ -38,8 +49,8 @@ enum tsDataTypes {
 	string = 'string',
 }
 
-export function modelInterfaceContent(attrs: ITplAttr[]): string {
-	return attrs.reduce((acc, { attribute = null, dataType = '' }) => {
+export function modelInterfaceContent(attrs: ITplAttr[], softDelete: boolean): string {
+	let content = attrs.reduce((acc, { attribute = null, dataType = '' }) => {
 		const lowerType = dataType.toLowerCase();
 
 		if (attribute && Object.keys(tsDataTypes).indexOf(lowerType) > -1) {
@@ -48,12 +59,19 @@ export function modelInterfaceContent(attrs: ITplAttr[]): string {
 				.replace(dataTypeRegEx, tsDataTypes[lowerType]);
 		}
 
+
 		return acc;
 	}, '');
+
+	if (softDelete) {
+		content += '\n\tdeletedAt: Date;';
+	}
+
+	return content + '\n';
 }
 
-export function modelSchemaContent(attrs: ITplAttr[]): string {
-	return attrs.reduce((acc, { attribute = null, dataType = null }) => {
+export function modelSchemaContent(attrs: ITplAttr[], softDelete: boolean): string {
+	let content = attrs.reduce((acc, { attribute = null, dataType = null }) => {
 		const lowerType = dataType.toLowerCase();
 
 		if (attribute && Object.keys(jsDataTypes).indexOf(lowerType) > -1) {
@@ -66,6 +84,12 @@ export function modelSchemaContent(attrs: ITplAttr[]): string {
 
 		return acc;
 	}, '');
+
+	if (softDelete) {
+		content += softDeleteSchemaContent;
+	}
+
+	return content + '\n';
 }
 
 export interface IModelContents {
@@ -73,9 +97,9 @@ export interface IModelContents {
 	schemaContent: string;
 }
 
-export function modelContents(attrs: ITplAttr[]): IModelContents {
-	const IDeclaration = modelInterfaceContent(attrs);
-	const schemaContent = modelSchemaContent(attrs);
+export function modelContents(attrs: ITplAttr[], softDelete: boolean = false): IModelContents {
+	const IDeclaration = modelInterfaceContent(attrs, softDelete);
+	const schemaContent = modelSchemaContent(attrs, softDelete);
 
 	return { IDeclaration, schemaContent };
 }

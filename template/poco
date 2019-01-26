@@ -4,7 +4,6 @@ import { <%- IName %> } from '../model/<%- fileName %>';
 export class <%- className %> implements <%- IName %> {
 	id;<%- propDeclaration %>
 	createdAt;
-	deletedAt;
 	updatedAt;
 
 	constructor(params: any) {
@@ -12,13 +11,12 @@ export class <%- className %> implements <%- IName %> {
 
 		this.id = params.id || `${params._id}`;<%- propAssign %>
 		this.createdAt = params.createdAt;
-		this.deletedAt = params.deletedAt;
 		this.updatedAt = params.updatedAt;
 	}
 }
 
 export class <%- className %>ListFilters {
-	query: any = { deletedAt: null };
+	query: any = <%- queryValue %>
 	queryStringArgs: any = {};
 	sort: any = {};
 

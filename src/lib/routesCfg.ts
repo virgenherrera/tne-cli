@@ -34,8 +34,6 @@ export function addRoutesToConfig(names: IModuleNames, prefix: string = 'apiV1')
 	const { singular, plural, routePath } = names;
 	const pluralRoute = routesProp.replace(':prefix', prefix).replace(':propName', plural).replace(':routePath', routePath);
 	const singularRoute = routesProp.replace(':prefix', prefix).replace(':propName', singular).replace(':routePath', `${routePath}/:id`);
-	const concatStr = pluralRoute + '\n\t' + singularRoute + '\n';
-
 
 	if (!pathExists(cfgPath)) {
 		mkdir('-p', cfgPath);
@@ -46,7 +44,12 @@ export function addRoutesToConfig(names: IModuleNames, prefix: string = 'apiV1')
 	}
 
 	const fileContent = `${readFileSync(routesCfgFilePath)}`;
-	const newFileContent = fileContent.replace(/^(.*)(\;\n)(\}\n)$/gm, '$1$2\n\t' + concatStr + '$3');
 
-	generateRoutesCfgFile(newFileContent);
+	if (fileContent.includes(pluralRoute) || fileContent.includes(singularRoute)) {
+		return;
+	}
+
+	const newFileContent = fileContent.replace(/^(.*)(\;\n)(\}\n)$/gm, '$1$2\n\t' + pluralRoute + '\n\t' + singularRoute + '\n' + '$3');
+
+	return generateRoutesCfgFile(newFileContent);
 }

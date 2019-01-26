@@ -20,7 +20,7 @@ export class <%- className %>Repository {
 		return new <%- className %>(entity);
 	}
 
-	async Delete(id: string, softDelete: boolean = true, foreignProps: any = {}): Promise<<%- className %>> {
+	async Delete(id: string, <%- softDeleteArg %>foreignProps: any = {}): Promise<<%- className %>> {
 		let entity = <any>await Model.findById(id).exec();
 
 		if (!entity) {
@@ -33,12 +33,7 @@ export class <%- className %>Repository {
 			}
 		});
 
-		if (softDelete) {
-			entity.deletedAt = true;
-			entity = await entity.save();
-		} else {
-			await Model.deleteOne({ _id: id }).exec();
-		}
+		<%- deleteProcess %>
 
 		return new <%- className %>(entity);
 	}
@@ -52,7 +47,7 @@ export class <%- className %>Repository {
 	async FindOne(query: any = {}, fields: string = null): Promise<<%- className %>> {
 		const entity = await Model.findOne(query, fields).exec();
 
-		if (!entity || entity.deletedAt) {
+		if (!entity<%- softDelCondition %>) {
 			throw { type: 404, message: `There is no <%- className %> that matches the parameters: '${JSON.stringify(query)}'.` };
 		}
 
@@ -81,7 +76,7 @@ export class <%- className %>Repository {
 	async GetById(id: string = null ): Promise<<%- className %>> {
 		const entity = await Model.findById(id).exec();
 
-		if (!entity || entity.deletedAt) {
+		if (!entity<%- softDelCondition %>) {
 			throw { type: 404, message: `There is no <%- className %> that matches the id: '${id}'.` };
 		}
 
@@ -91,7 +86,6 @@ export class <%- className %>Repository {
 	async Update(poco: <%- className %>, foreignProps: any = {}): Promise<<%- className %>> {
 		const {
 			id = null,<%- destructProps %>
-			deletedAt = null,
 		} = poco;
 		let entity = <any>await Model.findById(id).exec();
 
@@ -105,7 +99,7 @@ export class <%- className %>Repository {
 			}
 		});
 
-		<%- propUpdate %>if ([true, false].indexOf(deletedAt) > -1) { entity.deletedAt = deletedAt; }
+		<%- propUpdate %>
 
 		entity = await entity.save();
 		return new <%- className %>(entity);

@@ -3,7 +3,6 @@ import { join } from 'path';
 import { mkdir } from 'shelljs';
 import { pathExists, fileExists } from '@tne/common';
 import ColorConsole from './colorConsole';
-import { forceOption } from './cliOpts';
 
 const keyFileName = 'key.pem';
 const certificateFileName = 'certificate.pem';
@@ -21,7 +20,7 @@ export function autoGenSslCert(pathParam: string, force: boolean = false): void 
 	if (fileExists(keyFilePath) && !force) {
 		ColorConsole.red(`${'\n'}Unable to create self-signed cert since: "${keyFilePath}" already exists.`);
 		return;
-	} else if (fileExists(certFilePath) && !forceOption) {
+	} else if (fileExists(certFilePath) && !force) {
 		ColorConsole.red(`${'\n'}Unable to create self-signed cert since: "${certFilePath}" already exists.`);
 		return;
 	} else if ((fileExists(keyFilePath) || fileExists(certFilePath)) && force) {

@@ -11,12 +11,10 @@ const listSchema = {
 	sort: joi.string(),
 };
 const removeSchema = {
-	id,
-	softDelete: joi.boolean().default(true),
+	id,<%- softRemove %>
 };
 const updateSchema = {
-	id,
-	deletedAt: joi.boolean(),
+	id,<%- softUpdate %>
 	...mainSchema
 };
 
