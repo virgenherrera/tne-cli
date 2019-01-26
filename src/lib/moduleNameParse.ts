@@ -9,7 +9,8 @@ export function moduleNameParse(name: string): IModuleNames {
 	const IName = `I${className}`;
 	const routePath = toPlural(fileName);
 	const plural = toPlural(functionName);
+	const collectionName = toPlural(className);
 	const singular = toSingular(functionName);
 
-	return { className, fileName, functionName, IName, routePath, plural, singular, };
+	return { className, fileName, functionName, IName, routePath, plural, singular, collectionName, };
 }

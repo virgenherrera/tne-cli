@@ -67,7 +67,7 @@ export function interpolateProjectVars(projectPath: string, moduleNames: IModule
 	packageData.homepage = `https://https://github.com/your_username/${moduleNames.fileName}#readme`;
 	packageData.bugs.url = `https://https://github.com/your_username/${moduleNames.fileName}/issues`;
 
-	packageData.devDependencies[selfPackageData.name] = selfPackageData.version;
+	packageData.devDependencies[selfPackageData.name] = `^${selfPackageData.version}`;
 
 	const orderedDevDependencies = {};
 	Object.keys(packageData.devDependencies).sort().forEach(k => orderedDevDependencies[k] = packageData.devDependencies[k]);
@@ -124,11 +124,17 @@ export function newProject(pathParam: string, force: boolean = false): void {
 
 	// install project
 	ColorConsole.blueBright(`- installing project dependencies...`);
-	execSync(`npm install`, { encoding: 'utf-8', stdio: 'inherit', cwd: destinyPath });
-
-	ColorConsole.greenBright(
-		'- Project creation completed!',
-		`Project location: "${destinyPath}"`,
-		'\n\n\tNow build an awesome product!!!\n\n'
-	);
+	try {
+		execSync(`npm install`, { encoding: 'utf-8', stdio: 'inherit', cwd: destinyPath });
+		ColorConsole.greenBright(
+			'- Project creation completed!',
+			`Project location: "${destinyPath}"`,
+			'\n\n\tNow build an awesome product!!!\n\n'
+		);
+	} catch (E) {
+		ColorConsole.red(
+			'Error installing dependencies',
+			E
+		);
+	}
 }
