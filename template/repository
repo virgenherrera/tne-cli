@@ -2,12 +2,7 @@ import { parseSkipLimit, IGetAll } from '@tne/express-app';
 import { <%- className %>Model as Model } from '../model/<%- fileName %>';
 import { <%- className %>, <%- className %>ListFilters } from '../poco/<%- fileName %>';
 
-/* <%- className %> Repository Class */
 export class <%- className %>Repository {
-	static get instance(): <%- className %>Repository {
-		return new <%- className %>Repository;
-	}
-
 	async Create(poco: <%- className %>): Promise<<%- className %>> {
 		let entity = new Model(poco);
 
