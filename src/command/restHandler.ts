@@ -1,6 +1,6 @@
 import { join, parse } from 'path';
 import { ICommand, INewFileOpts } from '../interface';
-import { forceOption, newFileFromTemplate, moduleNameParse } from '../lib';
+import { getCliOpts, newFileFromTemplate, moduleNameParse } from '../lib';
 import { appRegEx, projectRootFolder, projectSrcFolder, projectHandlerFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 import { addRoutesToConfig } from '../lib/routesCfg';
@@ -14,6 +14,7 @@ export default class RestHandler implements ICommand {
 
 	action(nameArg) {
 		const { name } = parse(nameArg);
+		const { force } = getCliOpts();
 
 		if (!appRegEx.moduleName.test(name)) {
 			ColorConsole.red(`"${name}" is not a valid controller name.`);
@@ -27,7 +28,7 @@ export default class RestHandler implements ICommand {
 			template: 'rest-handler',
 			path: join(projectRootFolder.src, projectSrcFolder.handler, projectHandlerFolder.rest, name),
 			data,
-			overwrite: forceOption(),
+			overwrite: force,
 		};
 
 		const success = newFileFromTemplate(args);
@@ -35,6 +36,6 @@ export default class RestHandler implements ICommand {
 		if (!success) { return; }
 
 		// append to config/Routes
-		addRoutesToConfig(data);
+		return addRoutesToConfig(data);
 	}
 }

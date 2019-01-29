@@ -1,6 +1,6 @@
 import { parse, join } from 'path';
 import { ICommand, INewFileOpts } from '../interface';
-import { newFileFromTemplate, moduleNameParse, attributesParse, forceOption } from '../lib';
+import { newFileFromTemplate, moduleNameParse, attributesParse, getCliOpts } from '../lib';
 import { DEFAULT_ATTRIBUTES, appRegEx, projectSrcFolder, projectRootFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 import { ToTitleCase } from '@tne/common';
@@ -13,6 +13,7 @@ export default class Controller implements ICommand {
 
 	action(nameArg: string, attrsStr = DEFAULT_ATTRIBUTES) {
 		const { name } = parse(nameArg);
+		const { force } = getCliOpts();
 
 		if (!appRegEx.moduleName.test(name)) {
 			ColorConsole.red(`"${name}" is not a valid controller name.`);
@@ -27,7 +28,7 @@ export default class Controller implements ICommand {
 			template: 'controller',
 			path: join(projectRootFolder.src, projectSrcFolder.controller, name),
 			data,
-			overwrite: forceOption(),
+			overwrite: force,
 		};
 
 		return newFileFromTemplate(args);

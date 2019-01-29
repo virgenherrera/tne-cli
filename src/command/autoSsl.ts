@@ -1,5 +1,5 @@
 import { ICommand, } from '../interface';
-import { forceOption, autoGenSslCert } from '../lib';
+import { getCliOpts, autoGenSslCert } from '../lib';
 import { projectRootFolder, appRegEx } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 
@@ -10,7 +10,7 @@ export default class AutoSsl implements ICommand {
 	description = `auto-generates SSL certificate and key files.`;
 
 	action(pathParam: string = projectRootFolder.certs) {
-		const force = forceOption();
+		const { force } = getCliOpts();
 
 		if (pathParam !== projectRootFolder.certs && !appRegEx.appName.test(pathParam)) {
 			ColorConsole.red(`"${pathParam}" is not a valid path for ssl files.`);

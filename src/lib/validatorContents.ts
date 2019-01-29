@@ -35,14 +35,26 @@ export function creationSchemaContent(attrs: ITplAttr[]): string {
 	return content + '\n';
 }
 
+export function softRemoveContent(softDelete: boolean): string {
+	return (softDelete) ? '\n\tsoftDelete: joi.boolean().default(true),' : '';
+}
+
+export function softUpdateContent(softDelete: boolean): string {
+	return (softDelete) ? '\n\tdeletedAt: joi.boolean(),' : '';
+}
+
 export interface IValidatorContents {
 	mainSchema: string;
 	creationSchema: string;
+	softRemove: string;
+	softUpdate: string;
 }
 
-export function validatorContents(attrs: ITplAttr[]): IValidatorContents {
+export function validatorContents(attrs: ITplAttr[], softDelete: boolean = false): IValidatorContents {
 	const mainSchema = mainSchemaContent(attrs);
 	const creationSchema = creationSchemaContent(attrs);
+	const softRemove = softRemoveContent(softDelete);
+	const softUpdate = softUpdateContent(softDelete);
 
-	return { mainSchema, creationSchema };
+	return { mainSchema, creationSchema, softRemove, softUpdate };
 }

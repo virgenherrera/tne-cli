@@ -1,10 +1,8 @@
 {
-  "port": 3030,
-  "serviceUrl": "http://localhost:3030",
-  "webServiceUrl": "http://localhost:4200",
+  "port": 3000,
+  "hostname": "localhost",
   "appSecret": "$keys.app.secret",
-  "jwtExp": "14d",
-  "mongodbHost": "$keys.mongodb.production.host",
-  "mongodbDb": "$keys.mongodb.production.db",
-  "mongodbOptions": "$keys.mongodb.production.options"
+  "mongodbHost": "$keys.mongodb.development.host",
+  "mongodbDb": "$keys.mongodb.development.db",
+  "mongodbOptions": "$keys.mongodb.development.options"
 }

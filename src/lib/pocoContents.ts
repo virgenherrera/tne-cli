@@ -14,21 +14,30 @@ const filterParseTpl = `
 		}
 `;
 
-export function propDeclarationContent(attrs: ITplAttr[]): string {
-	return attrs.reduce((acc, { attribute = null }) => {
+export function propDeclarationContent(attrs: ITplAttr[], softDelete: boolean): string {
+	return attrs.reduce((acc, { attribute = null }, i, arr) => {
 		if (attribute) {
 			acc += propDeclareTpl.replace(propRegEx, attribute);
+		}
+
+		if (softDelete && arr.length === (i + 1)) {
+			acc += '\n\tdeletedAt;';
 		}
 
 		return acc;
 	}, '');
 }
 
-export function propAssignContent(attrs: ITplAttr[]): string {
-	return attrs.reduce((acc, { attribute = null }) => {
+export function propAssignContent(attrs: ITplAttr[], softDelete: boolean): string {
+	return attrs.reduce((acc, { attribute = null }, i, arr) => {
 		if (attribute) {
 			acc += propAssignTpl.replace(propRegEx, attribute);
 		}
+
+		if (softDelete && arr.length === (i + 1)) {
+			acc += '\n\t\tthis.deletedAt = params.deletedAt;';
+		}
+
 
 		return acc;
 	}, '');
@@ -44,6 +53,10 @@ export function listFilterDestructContent(attrs: ITplAttr[]): string {
 	}, '');
 }
 
+export function queryValueContent(softDelete: boolean): string {
+	const sdContent = (softDelete) ? ' deletedAt: null ' : '';
+	return `{${sdContent}};`;
+}
 export function filterParseContent(attrs: ITplAttr[]): string {
 	return attrs.reduce((acc, { attribute = null, dataType = '' }) => {
 		if (attribute) {
@@ -62,14 +75,16 @@ export interface IPocoContents {
 	propDeclaration: string;
 	propAssign: string;
 	listFilterDestruct: string;
+	queryValue: string;
 	filterParse: string;
 }
 
-export function pocoContents(attrs: ITplAttr[]): IPocoContents {
-	const propDeclaration = propDeclarationContent(attrs);
-	const propAssign = propAssignContent(attrs);
+export function pocoContents(attrs: ITplAttr[], softDelete: boolean = false): IPocoContents {
+	const propDeclaration = propDeclarationContent(attrs, softDelete);
+	const propAssign = propAssignContent(attrs, softDelete);
 	const listFilterDestruct = listFilterDestructContent(attrs);
+	const queryValue = queryValueContent(softDelete);
 	const filterParse = filterParseContent(attrs);
 
-	return { propDeclaration, propAssign, listFilterDestruct, filterParse };
+	return { propDeclaration, propAssign, listFilterDestruct, queryValue, filterParse };
 }

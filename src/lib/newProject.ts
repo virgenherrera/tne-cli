@@ -49,10 +49,12 @@ export function createFolderStructure(projectPath: string): void {
 export function interpolateProjectVars(projectPath: string, moduleNames: IModuleNames) {
 	const selfPackagePath = join(__dirname, '../../package.json');
 	const packagePath = join(projectPath, 'package.json');
+	const pmColPath = join(projectPath, 'postmanCollection/postman_collection.json');
 	const readmePath = join(projectPath, 'README.md');
 	const keysPath = join(projectPath, 'config/keys.json');
 	const selfPackageData = require(selfPackagePath);
 	const packageData = require(packagePath);
+	const pmColData = require(pmColPath);
 	const keysData = require(keysPath);
 	const readmeTpl = `${readFileSync(readmePath, { encoding: 'utf8' })}`;
 	const readmeData = {
@@ -67,7 +69,7 @@ export function interpolateProjectVars(projectPath: string, moduleNames: IModule
 	packageData.homepage = `https://https://github.com/your_username/${moduleNames.fileName}#readme`;
 	packageData.bugs.url = `https://https://github.com/your_username/${moduleNames.fileName}/issues`;
 
-	packageData.devDependencies[selfPackageData.name] = selfPackageData.version;
+	packageData.devDependencies[selfPackageData.name] = `^${selfPackageData.version}`;
 
 	const orderedDevDependencies = {};
 	Object.keys(packageData.devDependencies).sort().forEach(k => orderedDevDependencies[k] = packageData.devDependencies[k]);
@@ -78,8 +80,11 @@ export function interpolateProjectVars(projectPath: string, moduleNames: IModule
 	keysData.mongodb.production.db = `${moduleNames.className}_production`;
 	keysData.mongodb.test.db = `${moduleNames.className}_test`;
 
+	pmColData.info.name = moduleNames.className;
+
 	writeStrToFile(packagePath, JSON.stringify(packageData, null, 2));
 	writeStrToFile(keysPath, JSON.stringify(keysData, null, 2));
+	writeStrToFile(pmColPath, JSON.stringify(pmColData, null, 2));
 	writeStrToFile(readmePath, readmeContents);
 }
 
@@ -124,11 +129,17 @@ export function newProject(pathParam: string, force: boolean = false): void {
 
 	// install project
 	ColorConsole.blueBright(`- installing project dependencies...`);
-	execSync(`npm install`, { encoding: 'utf-8', stdio: 'inherit', cwd: destinyPath });
-
-	ColorConsole.greenBright(
-		'- Project creation completed!',
-		`Project location: "${destinyPath}"`,
-		'\n\n\tNow build an awesome product!!!\n\n'
-	);
+	try {
+		execSync(`npm install`, { encoding: 'utf-8', stdio: 'inherit', cwd: destinyPath });
+		ColorConsole.greenBright(
+			'- Project creation completed!',
+			`Project location: "${destinyPath}"`,
+			'\n\n\tNow build an awesome product!!!\n\n'
+		);
+	} catch (E) {
+		ColorConsole.red(
+			'Error installing dependencies',
+			E
+		);
+	}
 }

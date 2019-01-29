@@ -1,9 +1,7 @@
 {
-  "port": 3060,
-  "serviceUrl": "http://localhost:3060",
-  "webServiceUrl": "http://localhost:4200",
+  "port": 3737,
+  "hostname": "localhost",
   "appSecret": "$keys.app.secret",
-  "jwtExp": "14d",
   "mongodbHost": "$keys.mongodb.test.host",
   "mongodbDb": "$keys.mongodb.test.db",
   "mongodbOptions": "$keys.mongodb.test.options"
