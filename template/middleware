@@ -1,0 +1,9 @@
+import { express, IRequest, IResponse } from '@tne/express-app';
+
+export function <%- functionName %>(): express.RequestHandler {
+	return (req: IRequest, res: IResponse, next: express.NextFunction): any => {
+		// middleware logic here!
+		// according to:
+		// https://expressjs.com/en/guide/writing-middleware.html
+	};
+}

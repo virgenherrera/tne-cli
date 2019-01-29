@@ -13,7 +13,6 @@ export const DEFAULT_ATTRIBUTES = 'stringAttr:string,numberAttr:number,dateAttr:
 
 export const projectRootFolder = {
 	vscode: '.vscode',
-	assets: 'assets',
 	build: 'build',
 	certs: 'certs',
 	config: 'config',
@@ -33,13 +32,12 @@ export const projectSrcFolder = {
 	model: 'model',
 	poco: 'poco',
 	repository: 'repository',
-	service: 'service',
 	config: 'config',
 	validator: 'validator',
 };
 
 export const projectHandlerFolder = {
-	realTime: 'realtime',
+	realTime: 'realTime',
 	rendered: 'rendered',
 	rest: 'rest',
 };

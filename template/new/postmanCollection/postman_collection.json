@@ -1,0 +1,176 @@
+{
+  "info": {
+    "_postman_id": "7059e572-4f60-43dc-a51e-2ef35975e4a7",
+    "name": "tne-cli",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "system",
+      "item": [
+        {
+          "name": "{{apiUrl}}system/health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{apiUrl}}system/health",
+              "host": [
+                "{{apiUrl}}system"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "{{apiUrl}}system/health",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{apiUrl}}system/health",
+                  "host": [
+                    "{{apiUrl}}system"
+                  ],
+                  "path": [
+                    "health"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "177"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"b1-qeW5P/GGVvMISMFuw7OUDIfULmo\""
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 26 Jan 2019 03:09:24 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Resource found\",\n    \"data\": {\n        \"environment\": \"development\",\n        \"uptime\": 326.255,\n        \"humanUptime\": \"5 minutes\",\n        \"uptimeSince\": \"2019/January/25 09:03:58 PM UTC:-0600\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "{{apiUrl}}system/health",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{apiUrl}}system/health",
+              "host": [
+                "{{apiUrl}}system"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "{{apiUrl}}system/health",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{apiUrl}}system/health",
+                  "host": [
+                    "{{apiUrl}}system"
+                  ],
+                  "path": [
+                    "health"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "177"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"b1-cnOG6ZVY6lQdvh00iDwx9sj8/6U\""
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 26 Jan 2019 03:10:29 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Resource found\",\n    \"data\": {\n        \"environment\": \"development\",\n        \"uptime\": 391.261,\n        \"humanUptime\": \"7 minutes\",\n        \"uptimeSince\": \"2019/January/25 09:03:58 PM UTC:-0600\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

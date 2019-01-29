@@ -1,6 +1,6 @@
 import { parse, join } from 'path';
 import { ICommand, INewFileOpts } from '../interface';
-import { newFileFromTemplate, moduleNameParse, attributesParse, forceOption, pocoContents } from '../lib';
+import { newFileFromTemplate, moduleNameParse, attributesParse, getCliOpts, pocoContents } from '../lib';
 import { DEFAULT_ATTRIBUTES, appRegEx, projectSrcFolder, projectRootFolder } from '../constant/defaults';
 import ColorConsole from '../lib/colorConsole';
 import { ToTitleCase } from '@tne/common';
@@ -13,6 +13,7 @@ export default class Poco implements ICommand {
 
 	action(nameArg: string, attrsStr = DEFAULT_ATTRIBUTES) {
 		const { name } = parse(nameArg);
+		const { force, softDelete } = getCliOpts();
 
 		if (!appRegEx.moduleName.test(name)) {
 			ColorConsole.red(`"${name}" is not a valid poco name.`);
@@ -23,14 +24,14 @@ export default class Poco implements ICommand {
 		const data = {
 			...moduleNameParse(name),
 			...parsedAttrs,
-			...pocoContents(parsedAttrs.attributes)
+			...pocoContents(parsedAttrs.attributes, softDelete)
 		};
 
 		const args: INewFileOpts = {
 			template: 'poco',
 			path: join(projectRootFolder.src, projectSrcFolder.poco, name),
 			data,
-			overwrite: forceOption(),
+			overwrite: force,
 		};
 
 		return newFileFromTemplate(args);

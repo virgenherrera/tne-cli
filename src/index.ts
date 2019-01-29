@@ -14,7 +14,8 @@ const complementary = chalk.blueBright(COMPLEMENTARY_DESCRIPTION);
 cli
 	.version(appPackage.version, vFlags.join(', '))
 	.description(`${description}${complementary}`)
-	.option('-f, --force', 'forces cli to overwrite files if any.');
+	.option('-f, --force', 'forces cli to overwrite files if any.')
+	.option('-s, --soft-delete', 'Add soft-delete on commands that support it.');
 
 for (const { command, syntax = null, alias, description, action } of commands[Symbol.iterator]()) {
 	availableCommands.push(command, alias);

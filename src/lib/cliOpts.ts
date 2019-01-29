@@ -1,7 +1,12 @@
 import * as cli from 'commander';
 
-export function forceOption(): boolean {
-	const { force = false } = cli;
+export interface ICliOpts {
+	force: boolean;
+	softDelete: boolean;
+}
 
-	return force;
+export function getCliOpts(): ICliOpts {
+	const { force = false, softDelete = false } = cli;
+
+	return { force, softDelete };
 }
