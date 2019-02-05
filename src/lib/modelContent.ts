@@ -6,7 +6,7 @@ const strPropsReplacer = ':strProp';
 const propNameRegEx = new RegExp(propNameReplacer, 'g');
 const dataTypeRegEx = new RegExp(dataTypeReplacer, 'g');
 const strPropsRegEx = new RegExp(strPropsReplacer, 'g');
-const interfaceTpl = `${'\n'}	${propNameReplacer}: ${dataTypeReplacer};`;
+const interfaceTpl = `${'\n'}	${propNameReplacer}?: ${dataTypeReplacer};`;
 const strSchemaProps = `
 		trim: true,
 		lowercase: false,

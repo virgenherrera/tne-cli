@@ -13,8 +13,7 @@ const listSchema = {
 const removeSchema = {
 	id,<%- softRemove %>
 };
-const updateSchema = {
-	id,<%- softUpdate %>
+const updateSchema = {<%- softUpdate %>
 	...mainSchema
 };
 

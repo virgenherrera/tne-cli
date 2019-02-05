@@ -1,15 +1,15 @@
 import { parseSkipLimit, IGetAll } from '@tne/express-app';
-import { <%- className %>Model as Model } from '../model/<%- fileName %>';
+import { <%- className %>Model as Model, <%- IName %> } from '../model/<%- fileName %>';
 import { <%- className %>, <%- className %>ListFilters } from '../poco/<%- fileName %>';
 
 export class <%- className %>Repository {
-	async Create(poco: <%- className %>): Promise<<%- className %>> {
+	async Create(poco: <%- IName %>): Promise<<%- className %>> {
 		let entity = new Model(poco);
 
 		try {
 			entity = await entity.save();
 		} catch (E) {
-			throw { type: 500, message: `Error: '${E.code}' thrown by the data persistence layer.` };
+			throw { type: 500, message: `Error: '${E}'.` };
 		}
 
 		return new <%- className %>(entity);
@@ -78,10 +78,7 @@ export class <%- className %>Repository {
 		return new <%- className %>(entity);
 	}
 
-	async Update(poco: <%- className %>, foreignProps: any = {}): Promise<<%- className %>> {
-		const {
-			id = null,<%- destructProps %>
-		} = poco;
+	async Update(id: string, poco: <%- IName %>, foreignProps: any = {}): Promise<<%- className %>> {
 		let entity = <any>await Model.findById(id).exec();
 
 		if (!entity) {
@@ -94,7 +91,7 @@ export class <%- className %>Repository {
 			}
 		});
 
-		<%- propUpdate %>
+		Object.assign(entity, poco);
 
 		entity = await entity.save();
 		return new <%- className %>(entity);
