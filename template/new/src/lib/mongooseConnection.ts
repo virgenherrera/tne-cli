@@ -2,29 +2,30 @@ import * as mongoose from 'mongoose';
 
 export function mongooseConnection(getConfig: Function, logger: any = console, mockedMongoUri: string = null): Promise<string> {
 	return new Promise((Resolve, Reject) => {
-		const environment = getConfig('environment', 'development');
-		const mongodbHost = getConfig('mongodbHost');
-		const mongodbDb = getConfig('mongodbDb', 'sawappy-api_default');
-		const mongodbOptions: any = getConfig('mongodbOptions', { useNewUrlParser: true });
-		const connectionUri = (mockedMongoUri) ? mockedMongoUri : `${mongodbHost}/${mongodbDb}`;
+		const appName = getConfig('appName');
+		const environment = getConfig('environment');
+		const dbHost = getConfig('dbHost');
+		const dbName = getConfig('dbName', `${appName}_default`);
+		const dbOptions: any = getConfig('dbOptions', {});
+		const connectionUri = (mockedMongoUri) ? mockedMongoUri : `${dbHost}/${dbName}`;
 
 		(<any>mongoose).Promise = Promise;
 
-		// to avoid new version warnings
-		mongodbOptions.useCreateIndex = true;
-		mongodbOptions.useNewUrlParser = true;
-		// to avoid new version warnings
-
-		if (environment === 'development') {
+		if (environment !== 'production') {
 			mongoose.set('debug', logger);
 		}
 
-		mongoose.connect(connectionUri, mongodbOptions);
+		// to avoid new version warnings
+		mongoose.set('useFindAndModify', false);
+		mongoose.set('useCreateIndex', true);
+		mongoose.set('useNewUrlParser', true);
+
+		mongoose.connect(connectionUri, dbOptions);
 
 		mongoose.connection.on('error', E => {
 			if (E.message.code === 'ETIMEDOUT') {
 				logger.warn(E);
-				mongoose.connect(connectionUri, mongodbOptions);
+				mongoose.connect(connectionUri, dbOptions);
 			}
 
 			const { name, message } = E;

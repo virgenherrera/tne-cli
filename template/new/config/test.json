@@ -2,7 +2,7 @@
   "port": 3737,
   "hostname": "localhost",
   "appSecret": "$keys.app.secret",
-  "mongodbHost": "$keys.mongodb.test.host",
-  "mongodbDb": "$keys.mongodb.test.db",
-  "mongodbOptions": "$keys.mongodb.test.options"
+  "dbHost": "$keys.mongodb.test.host",
+  "dbName": "$keys.mongodb.test.db",
+  "dbOptions": "$keys.mongodb.test.options"
 }

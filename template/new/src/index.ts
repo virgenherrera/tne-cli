@@ -16,7 +16,7 @@ const config: IAppSettings = {
 		limit: maxIncomingReq,
 		strict: true,
 	},
-	preRouteHooks: [],
+	appMiddleware: [],
 	publicFolder: '../public',
 	faviconPath: '../public/favicon.ico',
 	routesFolder: './handler/rest',
