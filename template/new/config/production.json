@@ -2,7 +2,7 @@
   "port": 3000,
   "hostname": "localhost",
   "appSecret": "$keys.app.secret",
-  "mongodbHost": "$keys.mongodb.development.host",
-  "mongodbDb": "$keys.mongodb.development.db",
-  "mongodbOptions": "$keys.mongodb.development.options"
+  "dbHost": "$keys.mongodb.development.host",
+  "dbName": "$keys.mongodb.development.db",
+  "dbOptions": "$keys.mongodb.development.options"
 }

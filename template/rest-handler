@@ -30,8 +30,7 @@ export default class <%- className%>RestHandler {
 	static async get_<%- singular%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
-			const { params } = req;
-			const data = await ctrl.showAction(params);
+			const data = await ctrl.showAction(req.params);
 
 			return res.successJson('GET', data);
 		} catch (E) {
@@ -47,8 +46,7 @@ export default class <%- className%>RestHandler {
 	static async post_<%- plural%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
-			const params = req.body;
-			const data = await ctrl.createAction(params);
+			const data = await ctrl.createAction(req.body);
 
 			return res.successJson('POST', data);
 		} catch (E) {
@@ -64,8 +62,7 @@ export default class <%- className%>RestHandler {
 	static async put_<%- singular%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
-			const params = req.mapReqToObj('params', 'body');
-			const data = await ctrl.editAction(params);
+			const data = await ctrl.editAction(req.params, req.body);
 
 			return res.successJson('PUT', data);
 		} catch (E) {
@@ -81,7 +78,7 @@ export default class <%- className%>RestHandler {
 	static async delete_<%- singular%>(req: IRequest, res: IResponse) {
 		try {
 			const ctrl = new <%- className%>Controller;
-			const params = req.mapReqToObj('params');
+			const params = req.mapReqToObj('params', 'body');
 			const data = await ctrl.deleteAction(params);
 
 			return res.successJson('DELETE', data);

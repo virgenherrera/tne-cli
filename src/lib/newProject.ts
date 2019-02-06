@@ -9,9 +9,12 @@ import { moduleNameParse } from './moduleNameParse';
 import { IModuleNames } from '../interface';
 import { writeStrToFile } from './templateUtils';
 import { execSync } from 'child_process';
+import { randomBytes } from 'crypto';
 
-export function genRandStr() {
-	return Math.random().toString(36).slice(2).toUpperCase();
+export function genRandStr(size = 15) {
+	const buffer = randomBytes(size);
+
+	return buffer.toString('hex');
 }
 
 export function createFolderStructure(projectPath: string): void {
@@ -75,7 +78,7 @@ export function interpolateProjectVars(projectPath: string, moduleNames: IModule
 	Object.keys(packageData.devDependencies).sort().forEach(k => orderedDevDependencies[k] = packageData.devDependencies[k]);
 	packageData.devDependencies = orderedDevDependencies;
 
-	keysData.app.secret = `${Array(3).fill(null).map(genRandStr).join('')}`;
+	keysData.app.secret = `${genRandStr()}`;
 	keysData.mongodb.development.db = `${moduleNames.className}_development`;
 	keysData.mongodb.production.db = `${moduleNames.className}_production`;
 	keysData.mongodb.test.db = `${moduleNames.className}_test`;

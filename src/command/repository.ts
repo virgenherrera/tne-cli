@@ -24,7 +24,7 @@ export default class Repository implements ICommand {
 		const data = {
 			...moduleNameParse(name),
 			...parsedAttrs,
-			...repositoryContents(parsedAttrs.attributes, softDelete)
+			...repositoryContents(softDelete)
 		};
 
 		const args: INewFileOpts = {
