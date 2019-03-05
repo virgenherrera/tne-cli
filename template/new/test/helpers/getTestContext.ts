@@ -24,5 +24,5 @@ export async function getTestContext(): Promise<ExpressApplication> {
 
 	logger.info(`Service "${getConfig('appName')}" has started using "${getConfig('environment')}" environment.`);
 
-	return ExpressApplication.instance;
+	return ExpressApplication.getInstance();
 }

@@ -15,7 +15,7 @@ describe(`${Routes.systemHealth} endpoints`, () => {
 	});
 
 	after(async () => {
-		const { logsPath } = ExpressApplication.instance;
+		const { logsPath } = ExpressApplication.getInstance();
 		await ExpressApplication.destruct();
 
 		await dropTestLogs(logsPath);

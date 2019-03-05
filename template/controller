@@ -21,7 +21,7 @@ export class <%- className%>Controller {
 	}
 
 	async editAction(params: any, body: any): Promise<<%- className%>> {
-		const { id } = joiValidate(params, userSchema.find);
+		const { id } = joiValidate(params, <%- functionName%>Schema.find);
 		const dto = joiValidate(body, <%- functionName%>Schema.update);
 		const repository = new <%- className%>Repository;
 
@@ -29,7 +29,7 @@ export class <%- className%>Controller {
 	}
 
 	async listAction({ <%- attrKeys.join(', ') %>, sort, page, per_page }): Promise<IPagedDto<<%- className%>>> {
-		const uri = ExpressApplication.instance.buildUrl(Routes.<%- plural%>);
+		const uri = ExpressApplication.getInstance().buildUrl(Routes.<%- plural%>);
 		const dto = joiValidate({ <%- attrKeys.join(', ') %> }, <%- functionName%>Schema.list);
 		const filters = new <%- className%>ListFilters(dto, sort, page, per_page);
 		const repository = new <%- className%>Repository;
