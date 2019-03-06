@@ -78,22 +78,5 @@
       "text-summary"
     ],
     "all": true
-  },
-  "nodemonConfig": {
-    "nodeArgs": [
-      "--inspect-brk"
-    ],
-    "watch": [
-      "config/",
-      "src/"
-    ],
-    "ext": "ts,json",
-    "ignore": [
-      ".git",
-      "node_modules/**/node_modules"
-    ],
-    "execMap": {
-      "ts": "ts-node"
-    }
   }
 }
