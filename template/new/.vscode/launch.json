@@ -7,14 +7,19 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "pick node Process ID",
-      "processId": "${command:PickProcess}"
+      "name": "Attach to nodemon",
+      "port": 9229,
+      "restart": true
     },
     {
       "type": "node",
-      "request": "attach",
-      "name": "Attach to serve-debug",
-      "port": 9229
+      "request": "launch",
+      "name": "Run nodemon",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+      "program": "${workspaceFolder}/dist/index.js",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
