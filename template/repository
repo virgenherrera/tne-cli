@@ -1,6 +1,7 @@
 import { parseSkipLimit, IGetAll } from '@tne/express-app';
-import { <%- className %>Model as Model, <%- IName %> } from '../model/<%- fileName %>';
 import { <%- className %>, <%- className %>ListFilters } from '../poco/<%- fileName %>';
+import { <%- className %>Model as Model } from '../model/<%- fileName %>';
+import { <%- IName %> } from '../interface/<%- fileName %>';
 
 export class <%- className %>Repository {
 	async Create(poco: <%- IName %>): Promise<<%- className %>> {

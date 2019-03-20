@@ -25,14 +25,15 @@ export const projectRootFolder = {
 };
 
 export const projectSrcFolder = {
+	config: 'config',
 	controller: 'controller',
 	handler: 'handler',
+	interface: 'interface',
 	lib: 'lib',
 	middleware: 'middleware',
 	model: 'model',
 	poco: 'poco',
 	repository: 'repository',
-	config: 'config',
 	validator: 'validator',
 };
 
