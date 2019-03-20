@@ -1,6 +1,5 @@
 import { Document, Schema, Model, model } from 'mongoose';
-
-export interface <%- IName %> {<%- IDeclaration %>}
+import { <%- IName %> } from '../interface/<%- fileName %>';
 
 interface <%- IName %>Model extends <%- IName %>, Document {
 	// Additional Model contracts here!

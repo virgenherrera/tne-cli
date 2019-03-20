@@ -4,6 +4,7 @@ export { createFolderStructure } from './newProject';
 export { generateEnvFile } from './generateEnvFile';
 export { generateKeysFile } from './generateKeysFile';
 export { getCliOpts } from './cliOpts';
+export { interfaceContents } from './interfaceContent';
 export { modelContents } from './modelContent';
 export { moduleNameParse } from './moduleNameParse';
 export { newProject } from './newProject';
