@@ -1,6 +1,6 @@
 {
   "name": "@tne/cli",
-  "version": "1.3.4",
+  "version": "1.4.0",
   "description": "The tne CLI is a tool to initialize, scaffold and maintain @tne applications",
   "license": "MIT",
   "preferGlobal": true,

@@ -1,5 +1,17 @@
 export type filePermissions = 'rw' | 'rwx';
 
-export type templateTypes = 'controller' | 'rest-handler' | 'model' | 'poco' | 'validator' | 'repository' | 'middleware';
+export type templateTypes =
+	'controller' |
+	'interface' |
+	'middleware' |
+	'model' |
+	'poco' |
+	'repository' |
+	'rest-handler' |
+	'validator';
 
-export type cliTypes = 'string' | 'number' | 'date' | 'boolean';
+export type cliTypes =
+	'boolean' |
+	'date' |
+	'number' |
+	'string';
